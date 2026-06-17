@@ -1,0 +1,10 @@
+INSERT INTO tb_pessoa (nome, email, cpf) VALUES ('Carlos Eduardo Silva', 'carlos.silva@email.com', '12345678901');
+INSERT INTO tb_pessoa (nome, email, cpf) VALUES ('Ana Paula Souza', 'ana.souza@email.com', '23456789012');
+INSERT INTO tb_pessoa (nome, email, cpf) VALUES ('Fernando Lima', 'fernando.lima@email.com', '34567890123');
+INSERT INTO tb_pessoa (nome, email, cpf) VALUES ('Juliana Costa', 'juliana.costa@email.com', '45678901234');
+INSERT INTO tb_pessoa (nome, email, cpf) VALUES ('Roberto Alves', 'roberto.alves@email.com', '56789012345');
+INSERT INTO tb_pessoa (nome, email, cpf) VALUES ('Mariana Ferreira', 'mariana.ferreira@email.com', '67890123456');
+INSERT INTO tb_pessoa (nome, email, cpf) VALUES ('Paulo Henrique Rocha', 'paulo.rocha@email.com', '78901234567');
+INSERT INTO tb_pessoa (nome, email, cpf) VALUES ('Beatriz Mendes', 'beatriz.mendes@email.com', '89012345678');
+INSERT INTO tb_pessoa (nome, email, cpf) VALUES ('Lucas Martins', 'lucas.martins@email.com', '90123456789');
+INSERT INTO tb_pessoa (nome, email, cpf) VALUES ('Camila Oliveira', 'camila.oliveira@email.com', '01234567890');
