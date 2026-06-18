@@ -1,6 +1,5 @@
 package com.cefet.jdsaude_api.repository;
 
-import com.cefet.jdsaude_api.dto.PessoaRequestDTO;
 import com.cefet.jdsaude_api.model.Atendimento;
 import com.cefet.jdsaude_api.model.Pessoa;
 import org.springframework.data.jpa.repository.JpaRepository;
