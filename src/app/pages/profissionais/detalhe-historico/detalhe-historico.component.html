@@ -1,0 +1,99 @@
+<!-- <div class="page-wrapper">
+
+  <div class="loading-state" *ngIf="carregando">
+    <span class="spinner-border spinner-border-sm me-2" style="color:#5ADB94"></span>
+    Carregando consulta...
+  </div>
+
+  <ng-container *ngIf="!carregando">
+
+    <div class="not-found" *ngIf="!consulta">
+      <i class="bi bi-exclamation-triangle"></i>
+      <p>Consulta não encontrada.</p>
+      <a [routerLink]="['/profissionais', profissionalId, 'historico']" class="btn-voltar">Voltar ao histórico</a>
+    </div>
+
+    <ng-container *ngIf="consulta">
+
+      <header class="page-header">
+        <a [routerLink]="['/profissionais', profissionalId, 'historico']" class="btn-voltar">
+          <i class="bi bi-arrow-left me-2"></i>Histórico
+        </a>
+        <div>
+          <h1 class="page-titulo">Detalhe da Consulta</h1>
+          <p class="page-sub">{{ consulta.data | dateBr }} às {{ consulta.horario }}</p>
+        </div>
+        <app-status-badge [status]="consulta.status" class="ms-auto"></app-status-badge>
+      </header>
+
+      <div class="detail-grid">
+
+        <div class="detail-card">
+          <h3 class="card-titulo"><i class="bi bi-person me-2"></i>Paciente</h3>
+          <div class="info-row">
+            <div class="info-avatar">{{ consulta.pacienteNome.charAt(0) }}</div>
+            <div>
+              <p class="info-nome">{{ consulta.pacienteNome }}</p>
+              <p class="info-sub">CPF: {{ consulta.pacienteCpf }}</p>
+              <p class="info-sub">{{ consulta.pacienteIdade }} anos</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="detail-card">
+          <h3 class="card-titulo"><i class="bi bi-person-badge me-2"></i>Profissional</h3>
+          <div class="info-row" *ngIf="profissional">
+            <div class="info-avatar prof tipo-{{ profissional.tipo }}">
+              {{ iniciais(profissional.nome) }}
+            </div>
+            <div>
+              <p class="info-nome">{{ profissional.nome }}</p>
+              <p class="info-sub">{{ profissional.especialidade }}</p>
+              <p class="info-sub">{{ profissional.crm ?? profissional.coren ?? profissional.registro }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="detail-card">
+          <h3 class="card-titulo"><i class="bi bi-calendar3 me-2"></i>Data e Hora</h3>
+          <div class="date-display">
+            <div class="date-block">
+              <span class="date-label">Data</span>
+              <span class="date-val">{{ consulta.data | dateBr }}</span>
+            </div>
+            <div class="date-sep"></div>
+            <div class="date-block">
+              <span class="date-label">Horário</span>
+              <span class="date-val">{{ consulta.horario }}</span>
+            </div>
+            <div class="date-sep" *ngIf="consulta.retorno"></div>
+            <div class="date-block" *ngIf="consulta.retorno">
+              <span class="date-label">Retorno</span>
+              <span class="date-val retorno">{{ consulta.retorno | dateBr }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="detail-card full-width" *ngIf="consulta.diagnostico">
+          <h3 class="card-titulo"><i class="bi bi-clipboard2-pulse me-2"></i>Diagnóstico</h3>
+          <p class="detail-text">{{ consulta.diagnostico }}</p>
+        </div>
+
+        <div class="detail-card full-width" *ngIf="consulta.prescricao">
+          <h3 class="card-titulo"><i class="bi bi-capsule me-2"></i>Prescrição / Medicamentos</h3>
+          <div class="prescricao-box">
+            <i class="bi bi-file-medical-fill me-2"></i>
+            {{ consulta.prescricao }}
+          </div>
+        </div>
+
+        <div class="detail-card full-width" *ngIf="consulta.observacoes">
+          <h3 class="card-titulo"><i class="bi bi-chat-square-text me-2"></i>Observações</h3>
+          <p class="detail-text">{{ consulta.observacoes }}</p>
+        </div>
+
+      </div>
+
+    </ng-container>
+  </ng-container>
+</div> -->

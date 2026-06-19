@@ -1,0 +1,88 @@
+<div class="dt-wrapper">
+  <div class="dt-toolbar">
+    <div class="dt-search">
+      <i class="bi bi-search"></i>
+      <input
+        type="text"
+        [(ngModel)]="termoBusca"
+        (ngModelChange)="paginaAtual = 1"
+        placeholder="Buscar..."
+        class="dt-search-input"
+      />
+    </div>
+    <span class="dt-count">{{ dadosFiltrados.length }} registro(s)</span>
+  </div>
+
+  <div class="dt-scroll">
+    <table class="dt-table">
+      <thead>
+        <tr>
+          <th
+            *ngFor="let col of colunas"
+            [style.width]="col.width || 'auto'"
+            [class.sortable]="col.sortable !== false"
+            (click)="col.sortable !== false && ordenar(col.campo)"
+          >
+            {{ col.titulo }}
+            <span class="sort-icon" *ngIf="col.sortable !== false">
+              <i class="bi"
+                [class.bi-chevron-up]="sortCampo === col.campo && sortAsc"
+                [class.bi-chevron-down]="sortCampo === col.campo && !sortAsc"
+                [class.bi-chevron-expand]="sortCampo !== col.campo"
+              ></i>
+            </span>
+          </th>
+          <th class="th-acoes">Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="carregando">
+          <td [attr.colspan]="colunas.length + 1" class="td-center">
+            <div class="dt-loading">
+              <span class="spinner-border spinner-border-sm me-2"></span>Carregando...
+            </div>
+          </td>
+        </tr>
+        <tr *ngIf="!carregando && dadosFiltrados.length === 0">
+          <td [attr.colspan]="colunas.length + 1" class="td-center td-vazio">
+            <i class="bi bi-inbox me-2"></i>{{ mensagemVazia }}
+          </td>
+        </tr>
+        <tr *ngFor="let item of paginado" class="dt-row">
+          <td *ngFor="let col of colunas">
+            <ng-container *ngIf="col.campo === 'status'; else valorNormal">
+              <app-status-badge [status]="item.status"></app-status-badge>
+            </ng-container>
+            <ng-template #valorNormal>{{ formatarValor(item, col) }}</ng-template>
+          </td>
+          <td class="td-acoes">
+            <button class="btn-acao btn-ver"    title="Ver"     (click)="emitir('ver', item, $event)">
+              <i class="bi bi-eye"></i>
+            </button>
+            <button class="btn-acao btn-editar" title="Editar"  (click)="emitir('editar', item, $event)">
+              <i class="bi bi-pencil"></i>
+            </button>
+            <button class="btn-acao btn-del"    title="Cancelar" (click)="emitir('cancelar', item, $event)">
+              <i class="bi bi-x-circle"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="dt-footer" *ngIf="totalPaginas > 1">
+    <button class="pg-btn" [disabled]="paginaAtual === 1" (click)="paginaAtual = paginaAtual - 1">
+      <i class="bi bi-chevron-left"></i>
+    </button>
+    <button
+      *ngFor="let p of paginas"
+      class="pg-btn"
+      [class.active]="p === paginaAtual"
+      (click)="paginaAtual = p"
+    >{{ p }}</button>
+    <button class="pg-btn" [disabled]="paginaAtual === totalPaginas" (click)="paginaAtual = paginaAtual + 1">
+      <i class="bi bi-chevron-right"></i>
+    </button>
+  </div>
+</div>

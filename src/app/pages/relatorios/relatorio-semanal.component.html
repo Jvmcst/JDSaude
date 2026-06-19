@@ -1,0 +1,96 @@
+<div class="page-wrapper">
+  <header class="page-header">
+    <div>
+      <h1 class="page-titulo">Relatório Semanal</h1>
+      <p class="page-sub">Semana {{ semanaLabel }}</p>
+    </div>
+    <div class="header-actions">
+      <a routerLink="/relatorios" class="btn-voltar"><i class="bi bi-bar-chart me-2"></i>Dashboard</a>
+      <button class="btn-exportar" (click)="exportarCSV()">
+        <i class="bi bi-download me-2"></i>Exportar CSV
+      </button>
+    </div>
+  </header>
+
+  <div class="semana-bar">
+    <button class="semana-btn" (click)="semanaOffset = semanaOffset + 1; carregar()">
+      <i class="bi bi-chevron-left"></i> Semana anterior
+    </button>
+    <span class="semana-label-atual">{{ semanaLabel }}</span>
+    <button class="semana-btn" [disabled]="semanaOffset === 0" (click)="semanaOffset = semanaOffset - 1; carregar()">
+      Próxima semana <i class="bi bi-chevron-right"></i>
+    </button>
+  </div>
+
+  <!-- Totais -->
+  <div class="totais-row">
+    <div class="total-card tc-total">
+      <span class="tc-val">{{ totais.total }}</span><span class="tc-label">Total</span>
+    </div>
+    <div class="total-card tc-conc">
+      <span class="tc-val">{{ totais.concluidos }}</span><span class="tc-label">Concluídos</span>
+    </div>
+    <div class="total-card tc-canc">
+      <span class="tc-val">{{ totais.cancelados }}</span><span class="tc-label">Cancelados</span>
+    </div>
+  </div>
+
+  <div class="alert-erro" *ngIf="erro">
+    <i class="bi bi-exclamation-circle-fill me-2"></i>{{ erro }}
+  </div>
+
+  <div class="loading-state" *ngIf="carregando">
+    <span class="spinner-border spinner-border-sm me-2" style="color:#5ADB94"></span>Carregando...
+  </div>
+
+  <div class="table-wrap" *ngIf="!carregando && !erro">
+
+    <div class="empty-state" *ngIf="dados.length === 0">
+      <i class="bi bi-calendar-x"></i><p>Nenhum atendimento nesta semana.</p>
+    </div>
+
+    <table class="jd-table" *ngIf="dados.length > 0">
+      <thead>
+        <tr>
+          <th>Profissional</th>
+          <th class="tc">Atendimentos</th>
+          <th class="tc">Concluídos</th>
+          <th class="tc">Cancelados</th>
+          <th class="tc">Agendados</th>
+          <th class="tc">Taxa</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let d of dados">
+          <td>
+            <div class="prof-cell">
+              <div class="pav">{{ iniciais(d.profissionalNome) }}</div>
+              <span class="pnome">{{ d.profissionalNome }}</span>
+            </div>
+          </td>
+          <td class="tc">{{ d.total }}</td>
+          <td class="tc td-verde">{{ d.concluidos }}</td>
+          <td class="tc td-red">{{ d.cancelados }}</td>
+          <td class="tc">{{ d.agendados }}</td>
+          <td class="tc">
+            <span class="taxa-badge"
+              [style.color]="corTaxa(taxaConclusao(d))"
+              [style.border-color]="corTaxa(taxaConclusao(d)) + '44'">
+              {{ taxaConclusao(d) }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr class="tfoot-row">
+          <td class="total-label">TOTAIS</td>
+          <td class="tc total-val">{{ totais.total }}</td>
+          <td class="tc total-val td-verde">{{ totais.concluidos }}</td>
+          <td class="tc total-val td-red">{{ totais.cancelados }}</td>
+          <td class="tc"></td>
+          <td class="tc"></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>

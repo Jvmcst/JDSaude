@@ -1,0 +1,80 @@
+<div class="page-wrapper">
+
+  <header class="page-header">
+    <div>
+      <h1 class="page-titulo">Profissionais</h1>
+      <p class="page-sub">{{ profissionaisFiltrados.length }} profissional(is) encontrado(s)</p>
+    </div>
+  </header>
+
+  <div class="filtros-bar">
+    <div class="search-wrap">
+      <i class="bi bi-search search-icon"></i>
+      <input
+        type="text"
+        class="search-input"
+        [(ngModel)]="busca"
+        (ngModelChange)="paginaAtual = 1"
+        placeholder="Buscar por nome, CPF ou e-mail..."
+      />
+      <button *ngIf="busca" class="search-clear" (click)="busca=''; paginaAtual=1">
+        <i class="bi bi-x"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="alert-erro" *ngIf="erro">
+    <i class="bi bi-exclamation-circle-fill me-2"></i>{{ erro }}
+    <button class="btn-retry ms-3" (click)="carregar()">Tentar novamente</button>
+  </div>
+
+  <div class="loading-state" *ngIf="carregando">
+    <span class="spinner-border spinner-border-sm me-2" style="color:#5ADB94"></span>
+    Carregando profissionais...
+  </div>
+
+  <div class="prof-grid" *ngIf="!carregando && !erro">
+
+    <div class="empty-state" *ngIf="profissionaisFiltrados.length === 0">
+      <i class="bi bi-person-badge"></i>
+      <p>Nenhum profissional encontrado.</p>
+    </div>
+
+    <div class="prof-card" *ngFor="let p of paginado">
+      <div class="card-top">
+        <div class="prof-avatar">{{ iniciais(p.nome) }}</div>
+        <div class="card-info">
+          <span class="prof-nome">{{ p.nome }}</span>
+          <span class="prof-cpf">{{ p.cpf }}</span>
+        </div>
+      </div>
+
+      <div class="card-contato">
+        <span><i class="bi bi-envelope me-1"></i>{{ p.email }}</span>
+      </div>
+
+      <div class="card-footer">
+        <a [routerLink]="['/profissionais', p.id, 'historico']" class="btn-historico">
+          <i class="bi bi-clock-history me-1"></i>Ver histórico
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="paginacao" *ngIf="totalPaginas > 1 && !carregando">
+    <button class="pg-btn" [disabled]="paginaAtual === 1" (click)="paginaAtual = paginaAtual - 1">
+      <i class="bi bi-chevron-left"></i>
+    </button>
+    <button
+      *ngFor="let p of paginas"
+      class="pg-btn"
+      [class.active]="p === paginaAtual"
+      (click)="paginaAtual = p"
+    >{{ p }}</button>
+    <button class="pg-btn" [disabled]="paginaAtual === totalPaginas" (click)="paginaAtual = paginaAtual + 1">
+      <i class="bi bi-chevron-right"></i>
+    </button>
+  </div>
+
+</div>

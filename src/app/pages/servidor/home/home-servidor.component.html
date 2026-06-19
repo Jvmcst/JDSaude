@@ -1,0 +1,101 @@
+<div class="page-wrapper">
+  <header class="page-header">
+    <div>
+      <p class="header-data">{{ dataFormatada }}</p>
+      <h1 class="header-titulo">Olá, {{ nomeUsuario }}</h1>
+      <p class="header-sub">Aqui está o resumo do seu dia</p>
+    </div>
+    <a routerLink="/servidor/consultas" class="btn-iniciar">
+      <i class="bi bi-play-circle me-2"></i>Ver atendimentos
+    </a>
+  </header>
+
+  <div class="alert-erro" *ngIf="erro">
+    <i class="bi bi-exclamation-circle-fill me-2"></i>{{ erro }}
+  </div>
+
+  <section class="stats-grid">
+    <div class="stat-card pendentes">
+      <div class="stat-icon"><i class="bi bi-hourglass-split"></i></div>
+      <div>
+        <span class="stat-valor">{{ stats.pendentes }}</span>
+        <span class="stat-label">Aguardando atendimento</span>
+      </div>
+    </div>
+    <div class="stat-card atendimento">
+      <div class="stat-icon"><i class="bi bi-activity"></i></div>
+      <div>
+        <span class="stat-valor">{{ stats.emAndamento }}</span>
+        <span class="stat-label">Em andamento</span>
+      </div>
+    </div>
+    <div class="stat-card total">
+      <div class="stat-icon"><i class="bi bi-calendar2-week"></i></div>
+      <div>
+        <span class="stat-valor">{{ stats.total }}</span>
+        <span class="stat-label">Total pendentes</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Próximo atendimento -->
+  <section class="proxima-section" *ngIf="proximoAtendimento as prox">
+    <h2 class="section-titulo"><i class="bi bi-arrow-right-circle me-2"></i>Próximo atendimento</h2>
+    <div class="proxima-card">
+      <div class="proxima-info">
+        <span class="prox-label">Paciente</span>
+        <span class="prox-paciente">{{ prox.pessoaPaciente.nome }}</span>
+        <span class="prox-cpf">{{ prox.pessoaPaciente.cpf }}</span>
+      </div>
+      <div class="proxima-sep"></div>
+      <div class="proxima-info">
+        <span class="prox-label">Data</span>
+        <span class="prox-valor">{{ prox.dataRealizacao | dateBr }}</span>
+      </div>
+      <div class="proxima-sep"></div>
+      <div class="proxima-info">
+        <span class="prox-label">Profissional</span>
+        <span class="prox-valor">{{ prox.pessoaProfissional.nome }}</span>
+      </div>
+      <div class="proxima-actions">
+        <app-status-badge [status]="prox.situacao"></app-status-badge>
+        <a [routerLink]="['/servidor/consultas', prox.id, 'registro']" class="btn-atender">
+          <i class="bi bi-clipboard2-pulse me-1"></i>Registrar
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="atalhos-grid">
+    <a routerLink="/servidor/consultas" class="atalho-card"><i class="bi bi-list-check"></i><span>Atendimentos abertos</span></a>
+    <a routerLink="/profissionais"       class="atalho-card"><i class="bi bi-person-badge"></i><span>Profissionais</span></a>
+    <a routerLink="/pacientes"           class="atalho-card"><i class="bi bi-people"></i><span>Pacientes</span></a>
+    <a routerLink="/agenda"              class="atalho-card"><i class="bi bi-calendar3"></i><span>Agenda</span></a>
+  </section>
+
+  <section class="lista-section">
+    <h2 class="section-titulo"><i class="bi bi-list-ul me-2"></i>Atendimentos pendentes</h2>
+
+    <div class="loading-state" *ngIf="carregando">
+      <span class="spinner-border spinner-border-sm me-2" style="color:#5ADB94"></span>Carregando...
+    </div>
+
+    <div class="empty-state" *ngIf="!carregando && atendimentos.length === 0">
+      <i class="bi bi-check2-all"></i><p>Nenhum atendimento pendente!</p>
+    </div>
+
+    <div class="consultas-lista" *ngIf="!carregando && atendimentos.length > 0">
+      <div class="consulta-row" *ngFor="let a of atendimentos">
+        <div class="cr-paciente">
+          <span class="cr-nome">{{ a.pessoaPaciente.nome }}</span>
+          <span class="cr-cpf">{{ a.pessoaPaciente.cpf }}</span>
+        </div>
+        <span class="cr-data">{{ a.dataRealizacao | dateBr }}</span>
+        <app-status-badge [status]="a.situacao"></app-status-badge>
+        <a [routerLink]="['/servidor/consultas', a.id, 'registro']" class="btn-atender-sm">
+          <i class="bi bi-clipboard2-plus me-1"></i>Registrar
+        </a>
+      </div>
+    </div>
+  </section>
+</div>

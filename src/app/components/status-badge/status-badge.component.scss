@@ -1,0 +1,70 @@
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border-radius: var(--radius-full);
+  font-weight: 600;
+  font-family: var(--font-sans);
+  white-space: nowrap;
+  border: 1px solid transparent;
+  transition: all var(--transition-fast);
+
+  // --- Sizes ---
+  &.size-sm {
+    font-size: 0.7rem;
+    padding: 2px 7px;
+
+    i { font-size: 0.65rem; }
+    .badge-label { letter-spacing: 0.02em; }
+  }
+
+  &.size-md {
+    font-size: 0.8125rem;
+    padding: 4px 10px;
+
+    i { font-size: 0.75rem; }
+  }
+
+  &.size-lg {
+    font-size: 0.9rem;
+    padding: 6px 14px;
+
+    i { font-size: 0.875rem; }
+  }
+
+  // --- Roles de cada tipo de usuario ---
+  &.role-secretario {
+    background: rgba(88, 166, 255, 0.12);
+    color: #79b8ff;
+    border-color: rgba(88, 166, 255, 0.2);
+  }
+
+  &.role-servidor {
+    background: rgba(90, 219, 148, 0.12);
+    color: var(--color-primary);
+    border-color: rgba(90, 219, 148, 0.2);
+  }
+
+  &.role-admin {
+    background: rgba(227, 179, 65, 0.12);
+    color: #f5c842;
+    border-color: rgba(227, 179, 65, 0.2);
+  }
+
+  &.role-default {
+    background: var(--bg-overlay);
+    color: var(--text-muted);
+    border-color: var(--border-subtle);
+  }
+}
+
+// Pulse dot
+.pulse-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: statusPulse 2s infinite;
+}

@@ -1,0 +1,93 @@
+<div class="auth-wrapper">
+
+  <aside class="auth-sidebar d-none d-lg-flex">
+    <div class="sidebar-content">
+      <div class="brand-logo mb-4">
+        <span class="logo-icon">⚕</span>
+        <span class="logo-text">JD Saúde</span>
+      </div>
+      <h2 class="sidebar-headline">Cuidado com<br>precisão digital.</h2>
+      <p class="sidebar-sub">Sistema integrado de gestão hospitalar para secretários, servidores e administradores.</p>
+
+      <ul class="feature-list mt-5">
+        <li><span class="feat-dot"></span> Agendamentos em tempo real</li>
+        <li><span class="feat-dot"></span> Controle de escalas e plantões</li>
+        <li><span class="feat-dot"></span> Histórico clínico completo</li>
+        <li><span class="feat-dot"></span> Relatórios e métricas avançadas</li>
+      </ul>
+    </div>
+    <div class="sidebar-glow"></div>
+  </aside>
+
+  <main class="auth-main">
+    <div class="auth-card">
+
+      <div class="brand-mobile d-flex d-lg-none mb-4">
+        <span class="logo-icon-sm">⚕</span>
+        <span class="logo-text-sm">JD Saúde</span>
+      </div>
+
+      <h1 class="form-title">Bem-vindo de volta</h1>
+      <p class="form-subtitle">Acesse o sistema com suas credenciais</p>
+
+      <div class="alert-erro" *ngIf="erro" role="alert">
+        <i class="bi bi-exclamation-circle-fill me-2"></i>{{ erro }}
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="entrar()" novalidate>
+
+        <div class="field-group" [class.field-error]="loginCtrl.invalid && loginCtrl.touched">
+          <label for="login" class="field-label">Login</label>
+          <div class="input-wrap">
+            <i class="bi bi-person input-icon"></i>
+            <input
+              id="login"
+              type="text"
+              class="field-input"
+              formControlName="login"
+              placeholder="seu login"
+              autocomplete="username"
+            />
+          </div>
+          <span class="field-feedback" *ngIf="loginCtrl.invalid && loginCtrl.touched">
+            Login obrigatório.
+          </span>
+        </div>
+
+        <div class="field-group" [class.field-error]="senha.invalid && senha.touched">
+          <label for="senha" class="field-label">Senha</label>
+          <div class="input-wrap">
+            <i class="bi bi-lock input-icon"></i>
+            <input
+              id="senha"
+              [type]="mostrarSenha ? 'text' : 'password'"
+              class="field-input"
+              formControlName="senha"
+              placeholder="••••••••"
+              autocomplete="current-password"
+            />
+            <button type="button" class="toggle-senha" (click)="toggleSenha()" tabindex="-1">
+              <i class="bi" [class.bi-eye]="!mostrarSenha" [class.bi-eye-slash]="mostrarSenha"></i>
+            </button>
+          </div>
+          <span class="field-feedback" *ngIf="senha.invalid && senha.touched">
+            <ng-container *ngIf="senha.errors?.['required']">Senha obrigatória.</ng-container>
+            <ng-container *ngIf="senha.errors?.['minlength']">Mínimo 3 caracteres.</ng-container>
+          </span>
+        </div>
+
+        <button type="submit" class="btn-entrar" [disabled]="carregando">
+          <span *ngIf="!carregando">Entrar</span>
+          <span *ngIf="carregando" class="spinner-border spinner-border-sm" role="status"></span>
+        </button>
+
+      </form>
+
+      <p class="cadastro-link">
+        Não tem conta? <a routerLink="/cadastro">Cadastre-se</a>
+      </p>
+
+    </div>
+  </main>
+
+</div>

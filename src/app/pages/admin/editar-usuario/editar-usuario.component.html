@@ -1,0 +1,93 @@
+<div class="page-wrapper">
+
+  <div class="loading-state" *ngIf="buscando">
+    <span class="spinner-border spinner-border-sm me-2" style="color:#5ADB94"></span>Carregando...
+  </div>
+
+  <ng-container *ngIf="!buscando">
+
+    <header class="page-header">
+      <a routerLink="/admin/usuarios" class="btn-voltar">
+        <i class="bi bi-arrow-left me-2"></i>Voltar
+      </a>
+      <div>
+        <h1 class="page-titulo">Editar Pessoa</h1>
+        <p class="page-sub" *ngIf="pessoa">{{ pessoa.nome }}</p>
+      </div>
+    </header>
+
+    <div class="not-found" *ngIf="!pessoa">
+      <i class="bi bi-person-x"></i><p>Pessoa não encontrada.</p>
+      <a routerLink="/admin/usuarios" class="btn-voltar">Voltar</a>
+    </div>
+
+    <div class="alert-sucesso" *ngIf="sucesso">
+      <i class="bi bi-check-circle-fill me-2"></i>Dados atualizados com sucesso!
+    </div>
+    <div class="alert-erro" *ngIf="erro">
+      <i class="bi bi-exclamation-circle-fill me-2"></i>{{ erro }}
+    </div>
+
+    <ng-container *ngIf="pessoa">
+      <form [formGroup]="form" (ngSubmit)="salvar()" novalidate>
+
+        <div class="form-section">
+          <h3 class="section-titulo"><i class="bi bi-person me-2"></i>Dados</h3>
+          <div class="row g-3">
+
+            <div class="col-12">
+              <div class="field-group" [class.field-error]="form.get('nome')!.invalid && form.get('nome')!.touched">
+                <label class="field-label">Nome completo *</label>
+                <div class="input-wrap">
+                  <input type="text" class="field-input" formControlName="nome" placeholder="Nome completo" />
+                </div>
+                <span class="field-feedback" *ngIf="form.get('nome')!.invalid && form.get('nome')!.touched">
+                  <ng-container *ngIf="form.get('nome')!.errors?.['required']">Obrigatório.</ng-container>
+                  <ng-container *ngIf="form.get('nome')!.errors?.['minlength']">Mínimo 4 caracteres.</ng-container>
+                </span>
+              </div>
+            </div>
+
+            <div class="col-12 col-md-5">
+              <div class="field-group" [class.field-error]="form.get('cpf')!.invalid && form.get('cpf')!.touched">
+                <label class="field-label">CPF *</label>
+                <div class="input-wrap">
+                  <input type="text" class="field-input" formControlName="cpf"
+                    placeholder="000.000.000-00" maxlength="14" onlyNumbers />
+                </div>
+                <span class="field-feedback" *ngIf="form.get('cpf')!.invalid && form.get('cpf')!.touched">
+                  <ng-container *ngIf="form.get('cpf')!.errors?.['required']">Obrigatório.</ng-container>
+                  <ng-container *ngIf="form.get('cpf')!.errors?.['cpfInvalido']">CPF inválido.</ng-container>
+                </span>
+              </div>
+            </div>
+
+            <div class="col-12 col-md-7">
+              <div class="field-group" [class.field-error]="form.get('email')!.invalid && form.get('email')!.touched">
+                <label class="field-label">E-mail *</label>
+                <div class="input-wrap">
+                  <input type="email" class="field-input" formControlName="email" placeholder="email@exemplo.com" />
+                </div>
+                <span class="field-feedback" *ngIf="form.get('email')!.invalid && form.get('email')!.touched">
+                  <ng-container *ngIf="form.get('email')!.errors?.['required']">Obrigatório.</ng-container>
+                  <ng-container *ngIf="form.get('email')!.errors?.['email']">E-mail inválido.</ng-container>
+                </span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <a routerLink="/admin/usuarios" class="btn-cancelar">Cancelar</a>
+          <button type="submit" class="btn-salvar" [disabled]="salvando">
+            <span *ngIf="!salvando"><i class="bi bi-check-lg me-2"></i>Salvar alterações</span>
+            <span *ngIf="salvando" class="spinner-border spinner-border-sm me-2"></span>
+            <span *ngIf="salvando">Salvando...</span>
+          </button>
+        </div>
+
+      </form>
+    </ng-container>
+  </ng-container>
+</div>

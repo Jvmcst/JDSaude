@@ -1,0 +1,102 @@
+<div class="page-wrapper">
+
+  <header class="page-header">
+    <div>
+      <h1 class="page-titulo">Gerenciar Pessoas</h1>
+      <p class="page-sub">{{ pessoasFiltradas.length }} pessoa(s) cadastrada(s)</p>
+    </div>
+    <div class="header-actions">
+      <a routerLink="/admin/home" class="btn-voltar me-2">
+        <i class="bi bi-arrow-left me-2"></i>Dashboard
+      </a>
+      <a routerLink="/pacientes/novo" class="btn-novo">
+        <i class="bi bi-person-plus me-2"></i>Nova pessoa
+      </a>
+    </div>
+  </header>
+
+
+  <div class="stats-row">
+    <div class="sc"><span class="sv">{{ pessoas.length }}</span><span class="sl">Total</span></div>
+  </div>
+
+  <div class="filtros-bar">
+    <div class="search-wrap">
+      <i class="bi bi-search search-icon"></i>
+      <input type="text" class="search-input" [(ngModel)]="busca"
+        (ngModelChange)="paginaAtual = 1" placeholder="Buscar por nome, CPF ou e-mail..." />
+      <button *ngIf="busca" class="search-clear" (click)="busca=''; paginaAtual=1">
+        <i class="bi bi-x"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="alert-erro" *ngIf="erro">
+    <i class="bi bi-exclamation-circle-fill me-2"></i>{{ erro }}
+    <button class="btn-retry ms-3" (click)="carregar()">Tentar novamente</button>
+  </div>
+
+  <div class="loading-state" *ngIf="carregando">
+    <span class="spinner-border spinner-border-sm me-2" style="color:#5ADB94"></span>Carregando...
+  </div>
+
+  <div class="table-wrap" *ngIf="!carregando && !erro">
+
+    <div class="empty-state" *ngIf="pessoasFiltradas.length === 0">
+      <i class="bi bi-person-x"></i><p>Nenhuma pessoa encontrada.</p>
+    </div>
+
+    <table class="jd-table" *ngIf="pessoasFiltradas.length > 0">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>CPF</th>
+          <th>E-mail</th>
+          <th class="th-ac">Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of paginado">
+          <td>
+            <div class="user-cell">
+              <div class="uavatar">{{ p.nome.charAt(0) }}</div>
+              <span class="u-nome">{{ p.nome }}</span>
+            </div>
+          </td>
+          <td class="td-cpf">{{ p.cpf | cpfMask }}</td>
+          <td class="td-email">{{ p.email }}</td>
+          <td class="td-ac">
+            <a [routerLink]="['/pacientes', p.id, 'editar']" class="btn-ac btn-editar" title="Editar">
+              <i class="bi bi-pencil"></i>
+            </a>
+            <button class="btn-ac btn-inativar" title="Excluir" (click)="abrirExcluir(p)">
+              <i class="bi bi-trash3"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="paginacao" *ngIf="totalPaginas > 1">
+      <button class="pg-btn" [disabled]="paginaAtual === 1" (click)="paginaAtual = paginaAtual - 1">
+        <i class="bi bi-chevron-left"></i>
+      </button>
+      <button *ngFor="let p of paginas" class="pg-btn" [class.active]="p === paginaAtual" (click)="paginaAtual = p">{{ p }}</button>
+      <button class="pg-btn" [disabled]="paginaAtual === totalPaginas" (click)="paginaAtual = paginaAtual + 1">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<app-confirm-modal
+  [visivel]="modalExcluir"
+  titulo="Excluir pessoa"
+  [mensagem]="'Deseja excluir ' + (pessoaSelecionada?.nome ?? '') + '?'"
+  tipo="perigo"
+  labelConfirmar="Excluir"
+  [carregando]="excluindo"
+  (confirmado)="confirmarExcluir()"
+  (fechado)="modalExcluir = false"
+></app-confirm-modal>

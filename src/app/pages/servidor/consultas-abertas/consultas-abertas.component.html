@@ -1,0 +1,84 @@
+<div class="page-wrapper">
+  <header class="page-header">
+    <div>
+      <h1 class="page-titulo">Atendimentos Abertos</h1>
+      <p class="page-sub">{{ atendimentosFiltrados.length }} atendimento(s) pendente(s)</p>
+    </div>
+    <a routerLink="/servidor/home" class="btn-voltar">
+      <i class="bi bi-arrow-left me-2"></i>Voltar
+    </a>
+  </header>
+
+  <div class="stats-row">
+    <div class="scard agendada">
+      <span class="sv">{{ stats.agendados }}</span>
+      <span class="sl">Agendados</span>
+    </div>
+    <div class="scard atendimento">
+      <span class="sv">{{ stats.emAndamento }}</span>
+      <span class="sl">Em andamento</span>
+    </div>
+  </div>
+
+  <div class="filtros-bar">
+    <div class="search-wrap">
+      <i class="bi bi-search search-icon"></i>
+      <input type="text" class="search-input" [(ngModel)]="busca"
+        placeholder="Buscar paciente por nome ou CPF..." />
+      <button *ngIf="busca" class="search-clear" (click)="busca=''">
+        <i class="bi bi-x"></i>
+      </button>
+    </div>
+    <select class="filter-select" [(ngModel)]="filtroSituacao">
+      <option *ngFor="let s of situacaoOpcoes" [value]="s.valor">{{ s.label }}</option>
+    </select>
+  </div>
+
+  <div class="alert-erro" *ngIf="erro">
+    <i class="bi bi-exclamation-circle-fill me-2"></i>{{ erro }}
+    <button class="btn-retry ms-3" (click)="carregar()">Tentar novamente</button>
+  </div>
+
+  <div class="loading-state" *ngIf="carregando">
+    <span class="spinner-border spinner-border-sm me-2" style="color:#5ADB94"></span>Carregando...
+  </div>
+
+  <div class="empty-state" *ngIf="!carregando && !erro && atendimentosFiltrados.length === 0">
+    <i class="bi bi-clipboard2-x"></i>
+    <p>Nenhum atendimento encontrado.</p>
+  </div>
+
+  <div class="table-wrap" *ngIf="!carregando && !erro && atendimentosFiltrados.length > 0">
+    <table class="jd-table">
+      <thead>
+        <tr>
+          <th>Data realização</th>
+          <th>Paciente</th>
+          <th>Profissional</th>
+          <th>Situação</th>
+          <th class="th-ac">Ação</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let a of atendimentosFiltrados">
+          <td><span class="td-hora">{{ a.dataRealizacao | dateBr }}</span></td>
+          <td>
+            <span class="td-nome">{{ a.pessoaPaciente.nome }}</span>
+            <span class="td-cpf">{{ a.pessoaPaciente.cpf }}</span>
+          </td>
+          <td>{{ a.pessoaProfissional.nome }}</td>
+          <td>
+            <span class="situacao-badge situacao-{{ a.situacao.toLowerCase() }}">
+              {{ labelSituacao(a.situacao) }}
+            </span>
+          </td>
+          <td class="td-ac">
+            <a [routerLink]="['/servidor/consultas', a.id, 'registro']" class="btn-registrar">
+              <i class="bi bi-clipboard2-plus me-1"></i>Registrar
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,209 @@
+<div class="page-wrapper">
+
+  <div class="loading-state" *ngIf="carregando">
+    <span class="spinner-border spinner-border-sm me-2" style="color:#5ADB94"></span>Carregando...
+  </div>
+
+  <ng-container *ngIf="!carregando">
+
+    <header class="page-header">
+      <a routerLink="/servidor/consultas" class="btn-voltar">
+        <i class="bi bi-arrow-left me-2"></i>Voltar
+      </a>
+      <div>
+        <h1 class="page-titulo">Registro de Atendimento</h1>
+        <p class="page-sub" *ngIf="atendimento">
+          {{ atendimento.pessoaPaciente.nome }} — {{ atendimento.dataRealizacao | dateBr }}
+        </p>
+      </div>
+    </header>
+
+    <div class="alert-sucesso" *ngIf="sucesso">
+      <i class="bi bi-check-circle-fill me-2"></i>Registro salvo com sucesso! Redirecionando...
+    </div>
+    <div class="alert-erro" *ngIf="erro">
+      <i class="bi bi-exclamation-circle-fill me-2"></i>{{ erro }}
+    </div>
+
+    <div class="nao-encontrado" *ngIf="!atendimento">
+      <i class="bi bi-exclamation-triangle"></i>
+      <p>Atendimento não encontrado.</p>
+      <a routerLink="/servidor/consultas" class="btn-voltar">Voltar</a>
+    </div>
+
+    <ng-container *ngIf="atendimento">
+
+      <!-- Info do atendimento -->
+      <div class="info-consulta">
+        <div class="info-item">
+          <span class="info-label">Paciente</span>
+          <span class="info-val">{{ atendimento.pessoaPaciente.nome }}</span>
+          <span class="info-sub">{{ atendimento.pessoaPaciente.cpf }}</span>
+        </div>
+        <div class="info-sep"></div>
+        <div class="info-item">
+          <span class="info-label">Profissional</span>
+          <span class="info-val">{{ atendimento.pessoaProfissional.nome }}</span>
+        </div>
+        <div class="info-sep"></div>
+        <div class="info-item">
+          <span class="info-label">Data</span>
+          <span class="info-val">{{ atendimento.dataRealizacao | dateBr }}</span>
+        </div>
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="salvar()" novalidate>
+
+        <!-- DIAGNÓSTICOS -->
+        <div class="form-section">
+          <h3 class="section-titulo">
+            <i class="bi bi-clipboard2-pulse me-2"></i>Diagnósticos
+            <span class="obrigatorio">*</span>
+          </h3>
+
+          <div class="input-row">
+            <div class="input-wrap flex1">
+              <input
+                type="text"
+                class="field-input"
+                [(ngModel)]="termoDiag"
+                [ngModelOptions]="{standalone:true}"
+                (keydown.enter)="adicionarDiag(); $event.preventDefault()"
+                placeholder="Descreva o diagnóstico e pressione Enter..."
+              />
+            </div>
+            <button type="button" class="btn-add-inline" (click)="adicionarDiag()" [disabled]="!termoDiag.trim()">
+              <i class="bi bi-plus-lg"></i> Adicionar
+            </button>
+          </div>
+
+          <div class="tags-list" *ngIf="diagSelecionados.length > 0">
+            <div class="tag" *ngFor="let d of diagSelecionados; let i = index">
+              <i class="bi bi-clipboard2-check me-1"></i>{{ d }}
+              <button type="button" class="tag-remove" (click)="removerDiag(i)">
+                <i class="bi bi-x"></i>
+              </button>
+            </div>
+          </div>
+          <p class="hint-text" *ngIf="diagSelecionados.length === 0">
+            <i class="bi bi-info-circle me-1"></i>Adicione pelo menos um diagnóstico.
+          </p>
+        </div>
+
+        <div class="form-section">
+          <h3 class="section-titulo"><i class="bi bi-capsule me-2"></i>Prescrições / Receitas</h3>
+
+          <div class="prescricao-form">
+            <div class="pf-row">
+
+              <div class="pf-field flex2 relative">
+                <label class="field-label">Medicamento</label>
+                <div class="input-wrap">
+                  <input
+                    type="text"
+                    class="field-input"
+                    [(ngModel)]="termoMed"
+                    [ngModelOptions]="{standalone:true}"
+                    (ngModelChange)="buscarMed()"
+                    placeholder="Buscar medicamento..."
+                  />
+                </div>
+                <div class="sugestoes-list" *ngIf="sugestoesMed.length > 0">
+                  <button type="button" class="sugestao-item" *ngFor="let m of sugestoesMed" (click)="selecionarMed(m)">
+                    <span class="sug-codigo">{{ m.nome }}</span>
+                    <span class="sug-desc">{{ m.descricao }}</span>
+                  </button>
+                </div>
+                <span class="hint-text" *ngIf="buscandoMed">Buscando...</span>
+              </div>
+
+              <div class="pf-field flex2">
+                <label class="field-label">Posologia / Descrição</label>
+                <div class="input-wrap">
+                  <input
+                    type="text"
+                    class="field-input"
+                    [(ngModel)]="descricaoReceita"
+                    [ngModelOptions]="{standalone:true}"
+                    placeholder="Ex: 1 comprimido de 12 em 12h por 7 dias"
+                  />
+                </div>
+              </div>
+
+              <button
+                type="button"
+                class="btn-add-presc"
+                (click)="adicionarReceita()"
+                [disabled]="!medicamentoSelecionado || !descricaoReceita.trim()"
+              >
+                <i class="bi bi-plus-lg me-1"></i>Adicionar
+              </button>
+            </div>
+          </div>
+
+          <div class="prescricoes-lista" *ngIf="prescricoes.length > 0">
+            <div class="presc-item" *ngFor="let p of prescricoes; let i = index">
+              <div class="presc-info">
+                <span class="presc-med"><i class="bi bi-capsule-pill me-2"></i>{{ p.medicamento.nome }}</span>
+                <span class="presc-det">{{ p.descricao }}</span>
+              </div>
+              <button type="button" class="presc-remove" (click)="removerReceita(i)">
+                <i class="bi bi-trash3"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section assinatura-section">
+          <h3 class="section-titulo">
+            <i class="bi bi-pen me-2"></i>Assinatura Digital
+            <span class="obrigatorio">*</span>
+          </h3>
+          <p class="assinatura-hint">Assine com o mouse ou toque na área abaixo para validar o registro.</p>
+
+          <div class="canvas-wrap" [class.assinado]="assinado">
+            <canvas
+              #canvasAssinatura
+              class="canvas-assinatura"
+              (mousedown)="iniciarDesenho($event)"
+              (mousemove)="desenhar($event)"
+              (mouseup)="pararDesenho()"
+              (mouseleave)="pararDesenho()"
+              (touchstart)="iniciarDesenho($event)"
+              (touchmove)="desenhar($event)"
+              (touchend)="pararDesenho()"
+            ></canvas>
+            <div class="canvas-placeholder" *ngIf="!assinado">
+              <i class="bi bi-pen"></i>
+              <span>Assine aqui</span>
+            </div>
+          </div>
+
+          <div class="assinatura-actions">
+            <button type="button" class="btn-limpar" (click)="limparAssinatura()" *ngIf="assinado">
+              <i class="bi bi-eraser me-1"></i>Limpar
+            </button>
+            <span class="assinatura-ok" *ngIf="assinado">
+              <i class="bi bi-check-circle-fill me-1"></i>Assinatura registrada
+            </span>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <a routerLink="/servidor/consultas" class="btn-cancelar">Cancelar</a>
+          <button type="submit" class="btn-salvar" [disabled]="salvando || !formValido">
+            <span *ngIf="!salvando"><i class="bi bi-check-circle me-2"></i>Finalizar atendimento</span>
+            <span *ngIf="salvando" class="spinner-border spinner-border-sm me-2"></span>
+            <span *ngIf="salvando">Salvando...</span>
+          </button>
+        </div>
+
+        <p class="validacao-hint" *ngIf="!formValido">
+          <i class="bi bi-exclamation-triangle me-1"></i>
+          Adicione pelo menos um diagnóstico e assine o registro para finalizar.
+        </p>
+
+      </form>
+    </ng-container>
+  </ng-container>
+</div>

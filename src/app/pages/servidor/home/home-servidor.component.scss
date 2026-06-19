@@ -1,0 +1,217 @@
+
+.page-wrapper {
+  padding: 2rem;
+  max-width: 1280px;
+  margin: 0 auto;
+  @media (max-width: 768px) { padding: 1rem; }
+}
+
+.page-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.header-data  { font-size: .82rem; color: #5a7a66; text-transform: capitalize; margin: 0 0 .2rem; }
+.header-titulo{ font-size: 1.75rem; font-weight: 800; color: #f0faf5; margin: 0; }
+.header-sub   { font-size: .88rem; color: #6b8f78; margin: .25rem 0 0; }
+
+.btn-iniciar {
+  display: inline-flex;
+  align-items: center;
+  padding: .7rem 1.5rem;
+  background: #5ADB94;
+  color: #0a1a10;
+  font-weight: 700;
+  font-size: .9rem;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: background .2s, box-shadow .2s, transform .1s;
+  &:hover { background: #4dc982; box-shadow: 0 4px 16px rgba(#5ADB94,.3); transform: translateY(-1px); color: #0a1a10; }
+}
+
+// Stats
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+}
+
+.stat-card {
+  background: #0e1a14;
+  border: 1px solid rgba(#5ADB94,.12);
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: border-color .2s;
+  &:hover { border-color: rgba(#5ADB94,.25); }
+
+  .stat-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+  .stat-valor{ display: block; font-size: 1.75rem; font-weight: 800; line-height: 1; }
+  .stat-label{ display: block; font-size: .78rem; color: #6b8f78; margin-top: .25rem; }
+
+  &.pendentes   .stat-icon { background: rgba(#5ab8db,.12); color: #5ab8db; }
+  &.pendentes   .stat-valor { color: #5ab8db; }
+  &.atendimento .stat-icon { background: rgba(#dbb45a,.12); color: #dbb45a; }
+  &.atendimento .stat-valor { color: #dbb45a; }
+  &.concluidas  .stat-icon { background: rgba(#5ADB94,.12); color: #5ADB94; }
+  &.concluidas  .stat-valor { color: #5ADB94; }
+  &.total       .stat-icon { background: rgba(#9a9ab0,.12); color: #9a9ab0; }
+  &.total       .stat-valor { color: #9a9ab0; }
+}
+
+// Proxima consulta
+.proxima-section { margin-bottom: 1.75rem; }
+
+.section-titulo {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #c8e8d8;
+  margin: 0 0 .85rem;
+  i { color: #5ADB94; }
+}
+
+.proxima-card {
+  background: #0e1a14;
+  border: 1px solid rgba(#5ADB94,.2);
+  border-left: 3px solid #5ADB94;
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.proxima-hora {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .hora-val   { font-size: 1.6rem; font-weight: 800; color: #5ADB94; line-height: 1; }
+  .hora-label { font-size: .72rem; color: #5a7a66; text-transform: uppercase; letter-spacing: .4px; }
+}
+
+.proxima-sep { width: 1px; height: 40px; background: rgba(#5ADB94,.15); flex-shrink: 0; }
+
+.proxima-info {
+  display: flex;
+  flex-direction: column;
+  gap: .2rem;
+  .prox-paciente { font-size: 1rem; font-weight: 700; color: #f0faf5; }
+  .prox-cpf      { font-size: .8rem; color: #6b8f78; font-family: monospace; }
+  .prox-label    { font-size: .72rem; text-transform: uppercase; letter-spacing: .4px; color: #5a7a66; }
+  .prox-valor    { font-size: .95rem; font-weight: 600; color: #c8e8d8; }
+}
+
+.proxima-actions {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  margin-left: auto;
+  flex-wrap: wrap;
+}
+
+.btn-atender {
+  display: inline-flex;
+  align-items: center;
+  padding: .55rem 1.1rem;
+  background: #5ADB94;
+  color: #0a1a10;
+  font-weight: 700;
+  font-size: .85rem;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background .15s;
+  &:hover { background: #4dc982; color: #0a1a10; }
+}
+
+// Atalhos
+.atalhos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: .75rem;
+  margin-bottom: 2rem;
+}
+
+.atalho-card {
+  background: #0e1a14;
+  border: 1px solid rgba(#5ADB94,.12);
+  border-radius: 10px;
+  padding: 1.1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .6rem;
+  text-decoration: none;
+  transition: background .2s, border-color .2s, transform .15s;
+
+  i    { font-size: 1.4rem; color: #5ADB94; }
+  span { font-size: .82rem; color: #a8c8b8; font-weight: 600; text-align: center; }
+
+  &:hover { background: rgba(#5ADB94,.06); border-color: rgba(#5ADB94,.3); transform: translateY(-2px); }
+}
+
+// Lista
+.lista-section { margin-top: .5rem; }
+
+.loading-state { color: #6b8f78; font-size: .9rem; padding: 1.5rem; text-align: center; }
+
+.empty-state {
+  text-align: center;
+  padding: 2.5rem 1rem;
+  color: #4a7a5c;
+  i { font-size: 2.5rem; display: block; margin-bottom: .75rem; }
+}
+
+.consultas-lista {
+  background: #0e1a14;
+  border: 1px solid rgba(#5ADB94,.13);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.consulta-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: .85rem 1.25rem;
+  border-bottom: 1px solid rgba(#5ADB94,.07);
+  flex-wrap: wrap;
+  transition: background .15s;
+
+  &:hover { background: rgba(#5ADB94,.03); }
+  &:last-child { border-bottom: none; }
+}
+
+.cr-hora { font-size: .95rem; font-weight: 700; color: #5ADB94; width: 50px; flex-shrink: 0; }
+
+.cr-paciente {
+  flex: 1;
+  min-width: 150px;
+  .cr-nome { display: block; font-weight: 600; color: #f0faf5; font-size: .9rem; }
+  .cr-cpf  { display: block; font-size: .75rem; color: #6b8f78; font-family: monospace; }
+}
+
+.cr-sala { font-size: .85rem; color: #7aaa8a; width: 60px; text-align: center; }
+
+.btn-atender-sm {
+  display: inline-flex;
+  align-items: center;
+  padding: .4rem .85rem;
+  background: rgba(#5ADB94,.08);
+  border: 1px solid rgba(#5ADB94,.25);
+  border-radius: 7px;
+  color: #5ADB94;
+  font-size: .8rem;
+  font-weight: 600;
+  text-decoration: none;
+  margin-left: auto;
+  transition: .15s;
+  &:hover { background: rgba(#5ADB94,.15); }
+}

@@ -1,0 +1,90 @@
+<div class="page-wrapper">
+
+  <header class="page-header">
+    <div>
+      <h1 class="page-titulo">Pesquisa de Agenda</h1>
+      <p class="page-sub">Disponibilidade dos profissionais por atendimentos cadastrados</p>
+    </div>
+    <div class="header-actions">
+      <a routerLink="/relatorios" class="btn-voltar"><i class="bi bi-bar-chart me-2"></i>Dashboard</a>
+      <a routerLink="/relatorios/semanal" class="btn-voltar"><i class="bi bi-table me-2"></i>Semanal</a>
+    </div>
+  </header>
+
+  <div class="filtros-bar">
+    <div class="search-wrap">
+      <i class="bi bi-search search-icon"></i>
+      <input type="text" class="search-input" [(ngModel)]="busca"
+        placeholder="Buscar por nome ou e-mail..." />
+      <button *ngIf="busca" class="search-clear" (click)="busca=''">
+        <i class="bi bi-x"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="resumo-bar">
+    <span class="resumo-txt">{{ cardsFiltrados.length }} profissional(is) com atendimentos</span>
+    <a routerLink="/agenda/servidores" class="btn-ver-agenda">
+      <i class="bi bi-calendar3 me-1"></i>Ver agenda completa
+    </a>
+  </div>
+
+  <div class="alert-erro" *ngIf="erro">
+    <i class="bi bi-exclamation-circle-fill me-2"></i>{{ erro }}
+  </div>
+
+  <div class="loading-state" *ngIf="carregando">
+    <span class="spinner-border spinner-border-sm me-2" style="color:#5ADB94"></span>Carregando...
+  </div>
+
+  <div class="agenda-grid" *ngIf="!carregando && !erro">
+
+    <div class="empty-state" *ngIf="cardsFiltrados.length === 0">
+      <i class="bi bi-person-x"></i><p>Nenhum profissional encontrado com atendimentos.</p>
+    </div>
+
+    <div class="agenda-card" *ngFor="let c of cardsFiltrados">
+
+      <div class="card-top">
+        <div class="av">{{ iniciais(c.pessoa.nome) }}</div>
+        <div class="card-info">
+          <span class="prof-nome">{{ c.pessoa.nome }}</span>
+          <span class="prof-espec">{{ c.pessoa.email }}</span>
+        </div>
+      </div>
+
+      <div class="proxima-escala">
+        <div class="pe-item">
+          <span class="pe-label"><i class="bi bi-calendar-event me-1"></i>Última data</span>
+          <span class="pe-val">{{ formatarData(c.ultimaData) }}</span>
+        </div>
+        <div class="pe-item">
+          <span class="pe-label"><i class="bi bi-list-check me-1"></i>Total atendimentos</span>
+          <span class="pe-val">{{ c.totalAtendimentos }}</span>
+        </div>
+      </div>
+
+      <div class="escalas-count">
+        <span class="ec-label">Próximos atendimentos</span>
+        <div class="ec-bar-wrap">
+          <div class="ec-bar"
+            [style.width.%]="Math.min((c.proximos / 7) * 100, 100)"
+            [style.background]="corProximos(c.proximos)">
+          </div>
+        </div>
+        <span class="ec-val" [style.color]="corProximos(c.proximos)">{{ c.proximos }}</span>
+      </div>
+
+      <div class="card-footer">
+        <a [routerLink]="['/profissionais', c.pessoa.id, 'historico']" class="btn-hist">
+          <i class="bi bi-clock-history me-1"></i>Histórico
+        </a>
+        <a routerLink="/agenda/servidores" class="btn-agenda">
+          <i class="bi bi-calendar3 me-1"></i>Agenda
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+</div>

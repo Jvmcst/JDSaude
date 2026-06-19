@@ -1,0 +1,22 @@
+<header class="jd-navbar" [class.scrolled]="isScrolled()">
+  <div class="navbar-inner">
+
+    <a class="navbar-brand" routerLink="/" (click)="closeMenu()">
+      <div class="brand-logo">
+        <div class="brand-icon">
+          <i class="bi bi-heart-pulse-fill"></i>
+        </div>
+        <div class="brand-text">
+          <span class="brand-name">JD</span>
+          <span class="brand-sub">Sistema de Saúde</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- aparecer so quando ja estou autenticado -->
+    <button *ngIf="estaAutenticado()" class="btn-sair" (click)="sair()">
+      <i class="bi bi-box-arrow-right"></i> Sair
+    </button>
+
+  </div>
+</header>

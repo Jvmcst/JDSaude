@@ -1,0 +1,94 @@
+<div class="cal-wrapper" (click)="fecharPopup()">
+
+  <div class="cal-toolbar">
+    <div class="toolbar-left">
+      <button class="btn-hoje" (click)="irHoje()">Hoje</button>
+      <div class="nav-btns">
+        <button class="nav-btn" (click)="semanaAnterior()"><i class="bi bi-chevron-left"></i></button>
+        <button class="nav-btn" (click)="proximaSemana()"><i class="bi bi-chevron-right"></i></button>
+      </div>
+      <h2 class="semana-label">{{ labelSemana }}</h2>
+    </div>
+    <div class="toolbar-right">
+      <a routerLink="/agenda/servidores" class="btn-escalas">
+        <i class="bi bi-person-badge me-2"></i>Por servidor
+      </a>
+    </div>
+  </div>
+
+  <div class="alert-erro" *ngIf="erro">
+    <i class="bi bi-exclamation-circle-fill me-2"></i>{{ erro }}
+    <button class="btn-retry ms-3" (click)="carregar()">Tentar novamente</button>
+  </div>
+
+  <div class="loading-cal" *ngIf="carregando">
+    <span class="spinner-border spinner-border-sm me-2" style="color:#5ADB94"></span>Carregando agenda...
+  </div>
+
+  <div class="cal-body" *ngIf="!carregando && !erro">
+
+    <div class="cal-header">
+      <div
+        class="dia-header"
+        *ngFor="let dia of dias; let i = index"
+        [class.hoje]="dia.hoje"
+      >
+        <span class="dia-nome">{{ DIAS_SEMANA[i] }}</span>
+        <span class="dia-num" [class.hoje-num]="dia.hoje">{{ dia.data.getDate() }}</span>
+        <span class="dia-count" *ngIf="dia.atendimentos.length > 0">
+          {{ dia.atendimentos.length }}
+        </span>
+      </div>
+    </div>
+
+    <div class="cal-colunas">
+      <div
+        class="dia-col"
+        *ngFor="let dia of dias"
+        [class.hoje-col]="dia.hoje"
+      >
+        <div class="dia-vazio" *ngIf="dia.atendimentos.length === 0">
+          <span>—</span>
+        </div>
+
+        <div
+          class="evento"
+          *ngFor="let a of dia.atendimentos"
+          [style.border-left-color]="corSituacao(a.situacao)"
+          [style.background]="corSituacao(a.situacao) + '18'"
+          (click)="selecionar(a, $event)"
+        >
+          <span class="ev-paciente">{{ a.pessoaPaciente.nome }}</span>
+          <span class="ev-prof">{{ a.pessoaProfissional.nome }}</span>
+          <span class="ev-sit" [style.color]="corSituacao(a.situacao)">
+            {{ labelSituacao(a.situacao) }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="evento-popup" *ngIf="atendimentoSelecionado" (click)="$event.stopPropagation()">
+    <div class="popup-header" [style.border-left-color]="corSituacao(atendimentoSelecionado.situacao)">
+      <span class="popup-tipo">Atendimento #{{ atendimentoSelecionado.id }}</span>
+      <button class="popup-close" (click)="fecharPopup()"><i class="bi bi-x"></i></button>
+    </div>
+    <div class="popup-body">
+      <div class="popup-row">
+        <i class="bi bi-person"></i>{{ atendimentoSelecionado.pessoaPaciente.nome }}
+      </div>
+      <div class="popup-row">
+        <i class="bi bi-person-badge"></i>{{ atendimentoSelecionado.pessoaProfissional.nome }}
+      </div>
+      <div class="popup-row">
+        <i class="bi bi-calendar3"></i>{{ atendimentoSelecionado.dataRealizacao | dateBr }}
+      </div>
+      <div class="popup-row">
+        <i class="bi bi-circle-fill" [style.color]="corSituacao(atendimentoSelecionado.situacao)"></i>
+        {{ labelSituacao(atendimentoSelecionado.situacao) }}
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,100 @@
+<div class="admin-layout">
+
+  <aside class="admin-sidebar">
+    <div class="sidebar-brand">
+      <span class="brand-icon">⚕</span>
+      <span class="brand-name">JD Saúde</span>
+      <span class="brand-role">Admin</span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a
+        *ngFor="let item of menuItems"
+        class="nav-item"
+        [routerLink]="item.route"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{exact: item.route === '/admin/home'}"
+      >
+        <i class="bi {{ item.icon }}"></i>
+        <span>{{ item.label }}</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-info">
+        <div class="user-avatar">{{ nomeUsuario.charAt(0) }}</div>
+        <div class="user-details">
+          <span class="user-nome">{{ nomeUsuario }}</span>
+          <span class="user-perfil">Administrador</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="admin-main">
+    <header class="admin-header">
+      <div>
+        <p class="header-data">{{ dataFormatada }}</p>
+        <h1 class="header-titulo">Dashboard Administrativo</h1>
+      </div>
+    </header>
+
+    <section class="stats-grid">
+      <div class="stat-card total">
+        <div class="stat-icon"><i class="bi bi-people-fill"></i></div>
+        <div>
+          <span class="stat-valor">{{ stats.totalPessoas }}</span>
+          <span class="stat-label">Pessoas cadastradas</span>
+        </div>
+      </div>
+      <div class="stat-card ativos">
+        <div class="stat-icon"><i class="bi bi-calendar2-check"></i></div>
+        <div>
+          <span class="stat-valor">{{ stats.totalAtendimentos }}</span>
+          <span class="stat-label">Total de atendimentos</span>
+        </div>
+      </div>
+      <div class="stat-card concluidas">
+        <div class="stat-icon"><i class="bi bi-check-circle-fill"></i></div>
+        <div>
+          <span class="stat-valor">{{ stats.atendimentosConcluidos }}</span>
+          <span class="stat-label">Atendimentos concluídos</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="acesso-rapido">
+      <h2 class="section-titulo">Acesso rápido</h2>
+      <div class="acesso-grid">
+        <a routerLink="/pacientes" class="acesso-card">
+          <i class="bi bi-people-fill"></i>
+          <div>
+            <span class="ac-titulo">Pacientes</span>
+            <span class="ac-sub">Cadastrar e gerenciar pacientes</span>
+          </div>
+        </a>
+        <a routerLink="/profissionais" class="acesso-card">
+          <i class="bi bi-person-badge-fill"></i>
+          <div>
+            <span class="ac-titulo">Profissionais</span>
+            <span class="ac-sub">Ver histórico de atendimentos</span>
+          </div>
+        </a>
+        <a routerLink="/agenda" class="acesso-card">
+          <i class="bi bi-calendar3"></i>
+          <div>
+            <span class="ac-titulo">Agenda</span>
+            <span class="ac-sub">Calendário e escalas</span>
+          </div>
+        </a>
+        <a routerLink="/relatorios" class="acesso-card">
+          <i class="bi bi-bar-chart-fill"></i>
+          <div>
+            <span class="ac-titulo">Relatórios</span>
+            <span class="ac-sub">Dados e métricas do sistema</span>
+          </div>
+        </a>
+      </div>
+    </section>
+  </main>
+</div>

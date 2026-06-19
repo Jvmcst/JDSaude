@@ -1,0 +1,131 @@
+<div class="page-wrapper">
+  <header class="page-header">
+    <div>
+      <h1 class="page-titulo">Triagens / Escalas</h1>
+      <p class="page-sub">Registros de triagem vinculados a atendimentos</p>
+    </div>
+    <div class="header-actions">
+      <a routerLink="/agenda" class="btn-voltar"><i class="bi bi-calendar3 me-2"></i>Ver agenda</a>
+      <button class="btn-novo" (click)="exibirFormulario = !exibirFormulario">
+        <i class="bi bi-plus-lg me-2"></i>Nova triagem
+      </button>
+    </div>
+  </header>
+
+  <div class="form-card" *ngIf="exibirFormulario">
+    <h3 class="form-card-titulo"><i class="bi bi-clipboard2-pulse me-2"></i>Registrar Triagem</h3>
+    <form [formGroup]="form" (ngSubmit)="salvar()" novalidate>
+      <div class="row g-3">
+
+        <div class="col-12 col-md-4">
+          <div class="field-group" [class.field-error]="form.get('idPessoaProfissional')!.invalid && form.get('idPessoaProfissional')!.touched">
+            <label class="field-label">Profissional *</label>
+            <div class="input-wrap select-wrap">
+              <select class="field-input" formControlName="idPessoaProfissional">
+                <option value="" disabled>Selecione...</option>
+                <option *ngFor="let p of profissionais" [value]="p.id">{{ p.nome }}</option>
+              </select>
+              <i class="bi bi-chevron-down sel-arrow"></i>
+            </div>
+            <span class="field-feedback" *ngIf="form.get('idPessoaProfissional')!.invalid && form.get('idPessoaProfissional')!.touched">Obrigatório.</span>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-4">
+          <div class="field-group" [class.field-error]="form.get('idAtendimento')!.invalid && form.get('idAtendimento')!.touched">
+            <label class="field-label">Atendimento *</label>
+            <div class="input-wrap select-wrap">
+              <select class="field-input" formControlName="idAtendimento">
+                <option value="" disabled>Selecione...</option>
+                <option *ngFor="let a of atendimentos" [value]="a.id">
+                  #{{ a.id }} — {{ a.pessoaPaciente.nome }}
+                </option>
+              </select>
+              <i class="bi bi-chevron-down sel-arrow"></i>
+            </div>
+            <span class="field-feedback" *ngIf="form.get('idAtendimento')!.invalid && form.get('idAtendimento')!.touched">Obrigatório.</span>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-4">
+          <div class="field-group" [class.field-error]="form.get('descricao')!.invalid && form.get('descricao')!.touched">
+            <label class="field-label">Descrição *</label>
+            <div class="input-wrap">
+              <input type="text" class="field-input" formControlName="descricao" placeholder="Descrição da triagem..." />
+            </div>
+            <span class="field-feedback" *ngIf="form.get('descricao')!.invalid && form.get('descricao')!.touched">Obrigatório.</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-cancelar" (click)="exibirFormulario=false; form.reset()">Cancelar</button>
+        <button type="submit" class="btn-salvar" [disabled]="salvando">
+          <span *ngIf="!salvando"><i class="bi bi-check-lg me-2"></i>Salvar triagem</span>
+          <span *ngIf="salvando" class="spinner-border spinner-border-sm me-2"></span>
+          <span *ngIf="salvando">Salvando...</span>
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <div class="filtro-bar">
+    <label class="filtro-label">Filtrar por profissional:</label>
+    <select class="filter-select" [(ngModel)]="filtroProfId" (ngModelChange)="carregar()">
+      <option [value]="0">Todos</option>
+      <option *ngFor="let p of profissionais" [value]="p.id">{{ p.nome }}</option>
+    </select>
+  </div>
+
+  <div class="alert-erro" *ngIf="erro">
+    <i class="bi bi-exclamation-circle-fill me-2"></i>{{ erro }}
+    <button class="btn-retry ms-3" (click)="carregar()">Tentar novamente</button>
+  </div>
+
+  <div class="loading-state" *ngIf="carregando">
+    <span class="spinner-border spinner-border-sm me-2" style="color:#5ADB94"></span>Carregando triagens...
+  </div>
+
+  <ng-container *ngIf="!carregando && !erro">
+    <div class="empty-state" *ngIf="triagensPorData.length === 0">
+      <i class="bi bi-calendar-x"></i><p>Nenhuma triagem registrada.</p>
+    </div>
+
+    <div *ngFor="let grupo of triagensPorData" class="grupo-data">
+      <div class="grupo-header">
+        <span class="grupo-data-label">{{ grupo.data | dateBr }}</span>
+        <span class="grupo-count">{{ grupo.items.length }} triagem(s)</span>
+      </div>
+      <div class="escalas-grid">
+        <div class="escala-card" *ngFor="let t of grupo.items">
+          <div class="escala-turno-bar" style="background:#5ADB94"></div>
+          <div class="escala-body">
+            <div class="escala-top">
+              <span class="escala-prof">{{ t.pessoaProfissional.nome }}</span>
+              <span class="turno-badge">Triagem #{{ t.id }}</span>
+            </div>
+            <span class="escala-espec">{{ t.atendimento.pessoaPaciente.nome }}</span>
+            <div class="escala-detalhes">
+              <span><i class="bi bi-clipboard2-text me-1"></i>{{ t.descricao }}</span>
+            </div>
+          </div>
+          <button class="escala-del" (click)="abrirExcluir(t)" title="Remover">
+            <i class="bi bi-trash3"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>
+
+<app-confirm-modal
+  [visivel]="modalExcluir"
+  titulo="Remover triagem"
+  [mensagem]="'Deseja remover a triagem de ' + (triagemSelecionada?.pessoaProfissional?.nome ?? '') + '?'"
+  tipo="perigo"
+  labelConfirmar="Remover"
+  [carregando]="excluindo"
+  (confirmado)="confirmarExcluir()"
+  (fechado)="modalExcluir=false"
+></app-confirm-modal>

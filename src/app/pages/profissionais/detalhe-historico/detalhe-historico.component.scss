@@ -1,0 +1,148 @@
+
+.page-wrapper {
+  padding: 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+  @media (max-width: 768px) { padding: 1rem; }
+}
+
+.loading-state { color: #6b8f78; font-size: .9rem; padding: 2rem; text-align: center; }
+
+.not-found {
+  text-align: center;
+  padding: 3rem;
+  color: #4a7a5c;
+  i { font-size: 2.5rem; display: block; margin-bottom: .75rem; }
+  p { margin-bottom: 1rem; }
+}
+
+// Header
+.page-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+  flex-wrap: wrap;
+}
+
+.btn-voltar {
+  display: inline-flex;
+  align-items: center;
+  padding: .55rem 1rem;
+  background: transparent;
+  border: 1px solid rgba(#5ADB94, .2);
+  border-radius: 8px;
+  color: #7aaa8a;
+  font-size: .88rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: .15s;
+  white-space: nowrap;
+  &:hover { background: rgba(#5ADB94, .07); color: #5ADB94; }
+}
+
+.page-titulo { font-size: 1.5rem; font-weight: 800; color: #f0faf5; margin: 0; }
+.page-sub    { font-size: .85rem; color: #7aaa8a; margin: .2rem 0 0; }
+
+// Grid
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+
+  @media (max-width: 640px) { grid-template-columns: 1fr; }
+}
+
+// Cards
+.detail-card {
+  background: #0e1a14;
+  border: 1px solid rgba(#5ADB94, .13);
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+
+  &.full-width { grid-column: 1 / -1; }
+}
+
+.card-titulo {
+  font-size: .95rem;
+  font-weight: 700;
+  color: #c8e8d8;
+  margin: 0 0 1rem;
+  i { color: #5ADB94; }
+}
+
+// Info (paciente / profissional)
+.info-row {
+  display: flex;
+  align-items: center;
+  gap: .9rem;
+}
+
+.info-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(#5ADB94, .15);
+  border: 1px solid rgba(#5ADB94, .3);
+  color: #5ADB94;
+  font-size: .9rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  &.prof {
+    &.tipo-medico     { background: rgba(#5ADB94, .15); color: #5ADB94; border-color: rgba(#5ADB94, .3); }
+    &.tipo-enfermeiro { background: rgba(#5ab8db, .15); color: #5ab8db; border-color: rgba(#5ab8db, .3); }
+    &.tipo-tecnico    { background: rgba(#dbb45a, .15); color: #dbb45a; border-color: rgba(#dbb45a, .3); }
+  }
+}
+
+.info-nome { font-weight: 700; color: #f0faf5; margin: 0 0 .2rem; font-size: .95rem; }
+.info-sub  { font-size: .8rem; color: #7aaa8a; margin: 0; }
+
+// Data
+.date-display {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.date-block {
+  display: flex;
+  flex-direction: column;
+  gap: .2rem;
+}
+
+.date-label { font-size: .72rem; text-transform: uppercase; letter-spacing: .4px; color: #6b8f78; font-weight: 700; }
+.date-val   { font-size: 1.1rem; font-weight: 700; color: #f0faf5; }
+.date-val.retorno { color: #5ab8db; }
+
+.date-sep {
+  width: 1px;
+  height: 36px;
+  background: rgba(#5ADB94, .15);
+}
+
+// Conteudo
+.detail-text {
+  font-size: .9rem;
+  color: #c8e8d8;
+  line-height: 1.7;
+  margin: 0;
+}
+
+.prescricao-box {
+  background: rgba(#5ADB94, .06);
+  border: 1px solid rgba(#5ADB94, .2);
+  border-left: 3px solid #5ADB94;
+  border-radius: 8px;
+  padding: .85rem 1.1rem;
+  font-size: .9rem;
+  color: #c8e8d8;
+  line-height: 1.6;
+
+  i { color: #5ADB94; }
+}

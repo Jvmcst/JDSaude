@@ -1,0 +1,70 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate class="pf-form">
+
+  <div class="form-section">
+    <h3 class="section-title"><i class="bi bi-person me-2"></i>Dados da Pessoa</h3>
+
+    <div class="row g-3">
+
+      <div class="col-12">
+        <div class="field-group" [class.field-error]="nome.invalid && nome.touched">
+          <label class="field-label">Nome completo *</label>
+          <div class="input-wrap">
+            <input type="text" class="field-input" formControlName="nome" placeholder="Nome completo" />
+          </div>
+          <span class="field-feedback" *ngIf="nome.invalid && nome.touched">
+            <ng-container *ngIf="nome.errors?.['required']">Nome obrigatório.</ng-container>
+            <ng-container *ngIf="nome.errors?.['minlength']">Mínimo 4 caracteres.</ng-container>
+          </span>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-5">
+        <div class="field-group" [class.field-error]="cpf.invalid && cpf.touched">
+          <label class="field-label">CPF *</label>
+          <div class="input-wrap">
+            <input
+              type="text"
+              class="field-input"
+              formControlName="cpf"
+              placeholder="000.000.000-00"
+              maxlength="14"
+              onlyNumbers
+            />
+          </div>
+          <span class="field-feedback" *ngIf="cpf.invalid && cpf.touched">
+            <ng-container *ngIf="cpf.errors?.['required']">CPF obrigatório.</ng-container>
+            <ng-container *ngIf="cpf.errors?.['cpfInvalido']">CPF inválido.</ng-container>
+          </span>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-7">
+        <div class="field-group" [class.field-error]="email.invalid && email.touched">
+          <label class="field-label">E-mail *</label>
+          <div class="input-wrap">
+            <input type="email" class="field-input" formControlName="email" placeholder="email@exemplo.com" />
+          </div>
+          <span class="field-feedback" *ngIf="email.invalid && email.touched">
+            <ng-container *ngIf="email.errors?.['required']">E-mail obrigatório.</ng-container>
+            <ng-container *ngIf="email.errors?.['email']">E-mail inválido.</ng-container>
+          </span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <button type="button" class="btn-cancelar" (click)="cancelar.emit()">
+      <i class="bi bi-x-lg me-2"></i>Cancelar
+    </button>
+    <button type="submit" class="btn-salvar" [disabled]="carregando">
+      <span *ngIf="!carregando">
+        <i class="bi bi-check-lg me-2"></i>{{ modoEdicao ? 'Salvar alterações' : 'Cadastrar' }}
+      </span>
+      <span *ngIf="carregando" class="spinner-border spinner-border-sm me-2"></span>
+      <span *ngIf="carregando">Salvando...</span>
+    </button>
+  </div>
+
+</form>

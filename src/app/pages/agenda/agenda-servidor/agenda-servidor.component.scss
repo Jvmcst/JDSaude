@@ -1,0 +1,96 @@
+
+.page-wrapper { padding: 2rem; max-width: 1200px; margin: 0 auto; @media(max-width:768px){padding:1rem} }
+
+.page-header { display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:1.5rem; gap:1rem; flex-wrap:wrap; }
+.page-titulo  { font-size:1.75rem; font-weight:800; color:#f0faf5; margin:0; }
+.page-sub     { font-size:.85rem; color:#5a7a66; margin:.2rem 0 0; }
+
+.btn-voltar {
+  display:inline-flex; align-items:center; padding:.55rem 1rem;
+  background:transparent; border:1px solid rgba(#5ADB94,.2); border-radius:8px;
+  color:#7aaa8a; font-size:.88rem; font-weight:600; text-decoration:none; transition:.15s;
+  &:hover { background:rgba(#5ADB94,.07); color:#5ADB94; }
+}
+
+.layout-grid {
+  display:grid; grid-template-columns:260px 1fr; gap:1.25rem; align-items:start;
+  @media(max-width:900px) { grid-template-columns:1fr; }
+}
+
+// Sidebar
+.sidebar-prof {
+  background:#0e1a14; border:1px solid rgba(#5ADB94,.13); border-radius:12px;
+  padding:1rem; position:sticky; top:1rem;
+}
+.sidebar-title { font-size:.75rem; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:#5a7a66; margin:0 0 .75rem; padding:0 .25rem; }
+
+.prof-item {
+  display:flex; align-items:center; gap:.75rem; padding:.65rem .75rem; border-radius:8px;
+  cursor:pointer; transition:background .15s; margin-bottom:2px;
+  &:hover { background:rgba(#5ADB94,.06); }
+  &.ativo { background:rgba(#5ADB94,.1); border:1px solid rgba(#5ADB94,.25); }
+}
+
+.pav {
+  width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+  font-size:.78rem; font-weight:700; flex-shrink:0;
+  &.tipo-medico     { background:rgba(#5ADB94,.15); color:#5ADB94; border:1px solid rgba(#5ADB94,.3); }
+  &.tipo-enfermeiro { background:rgba(#5ab8db,.15); color:#5ab8db; border:1px solid rgba(#5ab8db,.3); }
+}
+.pinfo  { display:flex; flex-direction:column; min-width:0; }
+.pnome  { font-size:.82rem; font-weight:600; color:#f0faf5; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.pespec { font-size:.72rem; color:#6b8f78; }
+
+// Painel
+.painel-principal { display:flex; flex-direction:column; gap:.5rem; }
+
+.prof-header {
+  background:#0e1a14; border:1px solid rgba(#5ADB94,.15); border-radius:12px;
+  padding:1.25rem 1.5rem; display:flex; align-items:center; gap:1rem; flex-wrap:wrap;
+  margin-bottom:.5rem;
+}
+
+.pav-lg {
+  width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+  font-size:1rem; font-weight:700; flex-shrink:0;
+  &.tipo-medico     { background:rgba(#5ADB94,.15); color:#5ADB94; border:2px solid rgba(#5ADB94,.3); }
+  &.tipo-enfermeiro { background:rgba(#5ab8db,.15); color:#5ab8db; border:2px solid rgba(#5ab8db,.3); }
+}
+
+.prof-nome-lg  { font-size:1.2rem; font-weight:800; color:#f0faf5; margin:0; }
+.prof-espec-lg { font-size:.85rem; color:#7aaa8a; margin:.2rem 0 0; }
+
+.stats-mini { display:flex; gap:1.5rem; margin-left:auto; flex-wrap:wrap; }
+.sm-item    { display:flex; flex-direction:column; align-items:center; }
+.sm-v { font-size:1.4rem; font-weight:800; color:#5ADB94; line-height:1; }
+.sm-l { font-size:.72rem; color:#6b8f78; }
+
+.loading-state { color:#6b8f78; font-size:.9rem; padding:1.5rem; text-align:center; }
+
+.sub-titulo {
+  font-size:.95rem; font-weight:700; color:#c8e8d8; margin:.75rem 0 .6rem;
+  i { color:#5ADB94; }
+  &.mt-3 { margin-top:1.5rem; }
+}
+
+.empty-sub { font-size:.85rem; color:#4a7a5c; padding:.5rem 0; }
+
+.escalas-lista {
+  background:#0e1a14; border:1px solid rgba(#5ADB94,.12); border-radius:10px; overflow:hidden;
+  &.passadas { opacity:.6; }
+}
+
+.escala-row {
+  display:flex; align-items:center; gap:1rem; padding:.75rem 1.1rem;
+  border-bottom:1px solid rgba(#5ADB94,.06); transition:background .12s; flex-wrap:wrap;
+  &:hover { background:rgba(#5ADB94,.03); }
+  &:last-child { border-bottom:none; }
+}
+
+.er-turno-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+.er-data  { min-width:90px; }
+.er-d     { font-size:.88rem; font-weight:600; color:#c8e8d8; }
+.er-info  { display:flex; flex-direction:column; flex:1; }
+.er-turno { font-size:.85rem; font-weight:700; }
+.er-hora  { font-size:.75rem; color:#6b8f78; }
+.er-sala  { font-size:.78rem; color:#7aaa8a; i{color:#4a7a5c} }

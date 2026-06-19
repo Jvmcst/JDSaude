@@ -1,0 +1,105 @@
+<div class="page-wrapper">
+
+  <header class="page-header">
+    <div>
+      <h1 class="page-titulo">Pacientes</h1>
+      <p class="page-sub">{{ pessoasFiltradas.length }} paciente(s) encontrado(s)</p>
+    </div>
+    <a routerLink="/pacientes/novo" class="btn-novo">
+      <i class="bi bi-person-plus me-2"></i>Novo paciente
+    </a>
+  </header>
+
+  <div class="filtros-bar">
+    <div class="search-wrap">
+      <i class="bi bi-search search-icon"></i>
+      <input
+        type="text"
+        class="search-input"
+        [(ngModel)]="busca"
+        (ngModelChange)="paginaAtual = 1"
+        placeholder="Buscar por nome, CPF ou e-mail..."
+      />
+      <button *ngIf="busca" class="search-clear" (click)="busca = ''; paginaAtual = 1">
+        <i class="bi bi-x"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="alert-erro" *ngIf="erro">
+    <i class="bi bi-exclamation-circle-fill me-2"></i>{{ erro }}
+    <button class="btn-retry ms-3" (click)="carregar()">Tentar novamente</button>
+  </div>
+
+  <div class="loading-state" *ngIf="carregando">
+    <span class="spinner-border spinner-border-sm me-2" style="color:#5ADB94"></span>
+    Carregando pacientes...
+  </div>
+
+  <div class="table-wrap" *ngIf="!carregando && !erro">
+
+    <div class="empty-state" *ngIf="pessoasFiltradas.length === 0">
+      <i class="bi bi-people"></i>
+      <p>Nenhum paciente encontrado.</p>
+      <a routerLink="/pacientes/novo" class="btn-novo-sm">Cadastrar primeiro paciente</a>
+    </div>
+
+    <table class="jd-table" *ngIf="pessoasFiltradas.length > 0">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>CPF</th>
+          <th>E-mail</th>
+          <th class="th-acoes">Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of paginado">
+          <td>
+            <div class="paciente-cell">
+              <div class="avatar">{{ p.nome.charAt(0) }}</div>
+              <span class="paciente-nome">{{ p.nome }}</span>
+            </div>
+          </td>
+          <td class="td-cpf">{{ p.cpf | cpfMask }}</td>
+          <td>{{ p.email }}</td>
+          <td class="td-acoes">
+            <a [routerLink]="['/pacientes', p.id, 'editar']" class="btn-ac btn-editar" title="Editar">
+              <i class="bi bi-pencil"></i>
+            </a>
+            <button class="btn-ac btn-del" title="Excluir" (click)="abrirExcluir(p)">
+              <i class="bi bi-trash3"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="paginacao" *ngIf="totalPaginas > 1">
+      <button class="pg-btn" [disabled]="paginaAtual === 1" (click)="paginaAtual = paginaAtual - 1">
+        <i class="bi bi-chevron-left"></i>
+      </button>
+      <button
+        *ngFor="let p of paginas"
+        class="pg-btn"
+        [class.active]="p === paginaAtual"
+        (click)="paginaAtual = p"
+      >{{ p }}</button>
+      <button class="pg-btn" [disabled]="paginaAtual === totalPaginas" (click)="paginaAtual = paginaAtual + 1">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<app-confirm-modal
+  [visivel]="modalExcluir"
+  titulo="Excluir pessoa"
+  [mensagem]="'Deseja excluir ' + (pessoaSelecionada?.nome ?? '') + '? Esta ação não pode ser desfeita.'"
+  tipo="perigo"
+  labelConfirmar="Excluir"
+  [carregando]="excluindo"
+  (confirmado)="confirmarExcluir()"
+  (fechado)="modalExcluir = false"
+></app-confirm-modal>

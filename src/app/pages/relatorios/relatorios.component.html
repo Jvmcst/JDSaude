@@ -1,0 +1,86 @@
+<div class="page-wrapper">
+
+  <header class="page-header">
+    <div>
+      <h1 class="page-titulo">Relatórios e Métricas</h1>
+      <p class="page-sub">Visão geral baseada nos dados reais do sistema</p>
+    </div>
+    <div class="header-nav">
+      <a routerLink="/relatorios/semanal" class="btn-nav">
+        <i class="bi bi-table me-2"></i>Relatório semanal
+      </a>
+      <a routerLink="/relatorios/agenda" class="btn-nav">
+        <i class="bi bi-search me-2"></i>Pesquisa de agenda
+      </a>
+    </div>
+  </header>
+
+  <div class="alert-erro" *ngIf="erro">
+    <i class="bi bi-exclamation-circle-fill me-2"></i>{{ erro }}
+  </div>
+
+  <div class="loading-state" *ngIf="carregando">
+    <span class="spinner-border spinner-border-sm me-2" style="color:#5ADB94"></span>Carregando dados...
+  </div>
+
+  <ng-container *ngIf="!carregando && kpis">
+
+    <section class="kpi-grid">
+      <div class="kpi-card c1">
+        <div class="kpi-icon"><i class="bi bi-calendar2-check"></i></div>
+        <div><span class="kpi-val">{{ kpis.totalAtendimentos }}</span><span class="kpi-label">Total de atendimentos</span></div>
+      </div>
+      <div class="kpi-card c2">
+        <div class="kpi-icon"><i class="bi bi-people-fill"></i></div>
+        <div><span class="kpi-val">{{ kpis.totalPessoas }}</span><span class="kpi-label">Pessoas cadastradas</span></div>
+      </div>
+      <div class="kpi-card c3">
+        <div class="kpi-icon"><i class="bi bi-calendar-day"></i></div>
+        <div><span class="kpi-val">{{ kpis.atendimentosHoje }}</span><span class="kpi-label">Atendimentos hoje</span></div>
+      </div>
+      <div class="kpi-card c4">
+        <div class="kpi-icon"><i class="bi bi-check-circle-fill"></i></div>
+        <div><span class="kpi-val">{{ kpis.concluidos }}</span><span class="kpi-label">Concluídos</span></div>
+      </div>
+      <div class="kpi-card c5">
+        <div class="kpi-icon"><i class="bi bi-x-circle-fill"></i></div>
+        <div><span class="kpi-val">{{ kpis.cancelados }}</span><span class="kpi-label">Cancelados</span></div>
+      </div>
+      <div class="kpi-card c6">
+        <div class="kpi-icon"><i class="bi bi-graph-up-arrow"></i></div>
+        <div><span class="kpi-val">{{ kpis.taxaConclusao }}%</span><span class="kpi-label">Taxa de conclusão</span></div>
+      </div>
+    </section>
+
+    <section class="chart-section">
+      <div class="chart-header"><h2 class="chart-titulo">Atendimentos por dia — últimos 14 dias</h2></div>
+      <div class="chart-box"><canvas #chartBarras></canvas></div>
+    </section>
+
+    <div class="charts-row">
+      <section class="chart-section half">
+        <div class="chart-header"><h2 class="chart-titulo">Distribuição por situação</h2></div>
+        <div class="chart-box donut-box"><canvas #chartDonut></canvas></div>
+      </section>
+
+      <section class="chart-section half">
+        <div class="chart-header"><h2 class="chart-titulo">Concluídos vs Cancelados por dia</h2></div>
+        <div class="chart-box"><canvas #chartAgrupado></canvas></div>
+      </section>
+    </div>
+
+    <section class="chart-section" *ngIf="topPacientes.length > 0">
+      <div class="chart-header"><h2 class="chart-titulo">Pacientes com mais atendimentos</h2></div>
+      <div class="espec-lista">
+        <div class="espec-item" *ngFor="let p of topPacientes">
+          <span class="espec-nome">{{ p.nome }}</span>
+          <div class="espec-bar-wrap">
+            <div class="espec-bar" [style.width.%]="(p.total / topPacientes[0].total) * 100"></div>
+          </div>
+          <span class="espec-total">{{ p.total }}</span>
+        </div>
+      </div>
+    </section>
+
+  </ng-container>
+</div>

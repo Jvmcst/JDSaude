@@ -1,0 +1,137 @@
+<div class="page-wrapper">
+
+  <header class="page-header">
+    <a routerLink="/secretario/home" class="btn-voltar">
+      <i class="bi bi-arrow-left me-2"></i>Voltar
+    </a>
+    <div>
+      <h1 class="header-titulo">Agendar Atendimento</h1>
+      <p class="header-sub">Selecione paciente, profissional e data</p>
+    </div>
+  </header>
+
+  <div class="alert-sucesso" *ngIf="sucesso">
+    <i class="bi bi-check-circle-fill me-2"></i>Atendimento agendado com sucesso! Redirecionando...
+  </div>
+  <div class="alert-erro-global" *ngIf="erro">
+    <i class="bi bi-exclamation-circle-fill me-2"></i>{{ erro }}
+  </div>
+
+  <div class="loading-state" *ngIf="carregandoPessoas">
+    <span class="spinner-border spinner-border-sm me-2" style="color:#5ADB94"></span>
+    Carregando pessoas...
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="agendar()" novalidate *ngIf="!carregandoPessoas">
+    <div class="form-grid">
+
+      <div class="col-dados">
+
+        <div class="card-section">
+          <h2 class="card-titulo"><i class="bi bi-person me-2"></i>Paciente</h2>
+          <div class="field-group" [class.field-error]="pacienteCtrl.invalid && pacienteCtrl.touched">
+            <label class="field-label">Selecione o paciente</label>
+            <div class="input-wrap select-wrap">
+              <select class="field-input" formControlName="idPessoaPaciente">
+                <option value="" disabled>Escolha um paciente...</option>
+                <option *ngFor="let p of pessoas" [value]="p.id">
+                  {{ p.nome }} — {{ p.cpf }}
+                </option>
+              </select>
+              <i class="bi bi-chevron-down sel-arrow"></i>
+            </div>
+            <span class="field-feedback" *ngIf="pacienteCtrl.invalid && pacienteCtrl.touched">
+              Selecione um paciente.
+            </span>
+          </div>
+        </div>
+
+        <div class="card-section">
+          <h2 class="card-titulo"><i class="bi bi-person-badge me-2"></i>Profissional</h2>
+          <div class="field-group" [class.field-error]="profissionalCtrl.invalid && profissionalCtrl.touched">
+            <label class="field-label">Selecione o profissional</label>
+            <div class="input-wrap select-wrap">
+              <select class="field-input" formControlName="idPessoaProfissional">
+                <option value="" disabled>Escolha um profissional...</option>
+                <option *ngFor="let p of pessoas" [value]="p.id">
+                  {{ p.nome }}
+                </option>
+              </select>
+              <i class="bi bi-chevron-down sel-arrow"></i>
+            </div>
+            <span class="field-feedback" *ngIf="profissionalCtrl.invalid && profissionalCtrl.touched">
+              Selecione um profissional.
+            </span>
+          </div>
+        </div>
+
+        <div class="resumo-card" *ngIf="dataSelecionada">
+          <p class="resumo-label">Data selecionada</p>
+          <div class="resumo-info">
+            <span class="resumo-data">
+              <i class="bi bi-calendar3 me-2"></i>
+              {{ dataSelecionada | date:'dd/MM/yyyy' }}
+            </span>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-agendar" [disabled]="carregando || form.invalid">
+          <span *ngIf="!carregando">
+            <i class="bi bi-calendar-check me-2"></i>Confirmar agendamento
+          </span>
+          <span *ngIf="carregando" class="spinner-border spinner-border-sm me-2"></span>
+          <span *ngIf="carregando">Agendando...</span>
+        </button>
+
+      </div>
+
+      <div class="col-agenda">
+        <div class="card-section">
+          <div class="cal-header">
+            <button type="button" class="cal-nav" (click)="mesAnterior()">
+              <i class="bi bi-chevron-left"></i>
+            </button>
+            <h2 class="cal-mes">{{ mesLabel }}</h2>
+            <button type="button" class="cal-nav" (click)="proximoMes()">
+              <i class="bi bi-chevron-right"></i>
+            </button>
+          </div>
+
+          <div class="cal-grid-header">
+            <span *ngFor="let d of diasSemana">{{ d }}</span>
+          </div>
+
+          <div class="cal-grid">
+            <button
+              *ngFor="let dia of diasCalendario"
+              type="button"
+              class="cal-dia"
+              [class.outro-mes]="!dia.mesAtual"
+              [class.hoje]="dia.hoje"
+              [class.selecionado]="dia.selecionado"
+              [class.passado]="dia.passado"
+              [disabled]="dia.passado || !dia.mesAtual"
+              (click)="selecionarDia(dia)"
+            >{{ dia.diaNum }}</button>
+          </div>
+
+          <div class="cal-legenda">
+            <span><span class="leg-dot hoje"></span>Hoje</span>
+            <span><span class="leg-dot selecionado"></span>Selecionado</span>
+          </div>
+
+          <p class="field-feedback" *ngIf="dataCtrl.invalid && dataCtrl.touched && !dataSelecionada">
+            Selecione uma data.
+          </p>
+        </div>
+
+        <div class="hint-card" *ngIf="!dataSelecionada">
+          <i class="bi bi-arrow-up-left"></i>
+          <p>Selecione uma data no calendário para continuar.</p>
+        </div>
+      </div>
+
+    </div>
+  </form>
+
+</div>

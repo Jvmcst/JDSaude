@@ -1,0 +1,70 @@
+
+@use '../login/login.component.scss';
+
+// preview dos perfil
+.perfis-preview {
+  .perfis-label {
+    font-size: .78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    color: #4a7a5c;
+    margin-bottom: .75rem;
+  }
+}
+
+.perfil-badge {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  color: #a8c8b8;
+  font-size: .9rem;
+  margin-bottom: .5rem;
+
+  .badge-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+
+    &.secretario { background: #5ADB94; box-shadow: 0 0 6px #5ADB94; }
+    &.servidor   { background: #5ab8db; box-shadow: 0 0 6px #5ab8db; }
+    &.admin      { background: #db955a; box-shadow: 0 0 6px #db955a; }
+  }
+}
+
+// olhinho nao vaza mais e nao some em colunas estreitas
+.toggle-senha {
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.field-input {
+  min-width: 0;
+}
+
+// Select 
+.select-wrap {
+  .field-select {
+    appearance: none;
+    cursor: pointer;
+    padding-right: 2.5rem;
+    color: #e0f4ea;
+
+    option {
+      background: #1a2e22;
+      color: #e0f4ea;
+    }
+
+    &:invalid, option[value=""] { color: #3d5c49; }
+  }
+
+  .select-arrow {
+    position: absolute;
+    right: 1rem;
+    color: #4a7a5c;
+    font-size: .8rem;
+    pointer-events: none;
+  }
+}

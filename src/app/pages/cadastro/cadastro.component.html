@@ -1,0 +1,166 @@
+<div class="auth-wrapper">
+
+  <aside class="auth-sidebar d-none d-lg-flex">
+    <div class="sidebar-content">
+      <div class="brand-logo mb-4">
+        <span class="logo-icon">⚕</span>
+        <span class="logo-text">JD Saúde</span>
+      </div>
+      <h2 class="sidebar-headline">Faça parte<br>da equipe.</h2>
+      <p class="sidebar-sub">Crie sua conta para acessar o sistema de gestão hospitalar com as permissões do seu perfil.</p>
+
+      <div class="perfis-preview mt-5">
+        <p class="perfis-label">Perfis disponíveis</p>
+        <div class="perfil-badge">
+          <span class="badge-dot secretario"></span> Secretário
+        </div>
+        <div class="perfil-badge">
+          <span class="badge-dot servidor"></span> Servidor
+        </div>
+        <div class="perfil-badge">
+          <span class="badge-dot admin"></span> Administrador
+        </div>
+      </div>
+    </div>
+    <div class="sidebar-glow"></div>
+  </aside>
+
+  <main class="auth-main">
+    <div class="auth-card">
+
+      <div class="brand-mobile d-flex d-lg-none mb-4">
+        <span class="logo-icon-sm">⚕</span>
+        <span class="logo-text-sm">JD Saúde</span>
+      </div>
+
+      <h1 class="form-title">Criar conta</h1>
+      <p class="form-subtitle">Preencha os dados para se cadastrar</p>
+
+      <div class="alert-erro" *ngIf="erro" role="alert">
+        <i class="bi bi-exclamation-circle-fill me-2"></i>{{ erro }}
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="cadastrar()" novalidate>
+
+        <div class="field-group" [class.field-error]="nome.invalid && nome.touched">
+          <label for="nome" class="field-label">Nome completo</label>
+          <div class="input-wrap">
+            <i class="bi bi-person input-icon"></i>
+            <input
+              id="nome"
+              type="text"
+              class="field-input"
+              formControlName="nome"
+              placeholder="Seu nome completo"
+              autocomplete="name"
+            />
+          </div>
+          <span class="field-feedback" *ngIf="nome.invalid && nome.touched">
+            <ng-container *ngIf="nome.errors?.['required']">Nome obrigatório.</ng-container>
+            <ng-container *ngIf="nome.errors?.['minlength']">Mínimo 3 caracteres.</ng-container>
+          </span>
+        </div>
+
+        <div class="field-group" [class.field-error]="email.invalid && email.touched">
+          <label for="email" class="field-label">E-mail</label>
+          <div class="input-wrap">
+            <i class="bi bi-envelope input-icon"></i>
+            <input
+              id="email"
+              type="email"
+              class="field-input"
+              formControlName="email"
+              placeholder="seu@email.com"
+              autocomplete="email"
+            />
+          </div>
+          <span class="field-feedback" *ngIf="email.invalid && email.touched">
+            <ng-container *ngIf="email.errors?.['required']">E-mail obrigatório.</ng-container>
+            <ng-container *ngIf="email.errors?.['email']">E-mail inválido.</ng-container>
+          </span>
+        </div>
+
+        <div class="field-group" [class.field-error]="perfil.invalid && perfil.touched">
+          <label for="perfil" class="field-label">Perfil de acesso</label>
+          <div class="input-wrap select-wrap">
+            <i class="bi bi-shield-check input-icon"></i>
+            <select id="perfil" class="field-input field-select" formControlName="perfil">
+              <option value="" disabled selected>Selecione um perfil</option>
+              <option *ngFor="let p of perfis" [value]="p.valor">{{ p.label }}</option>
+            </select>
+            <i class="bi bi-chevron-down select-arrow"></i>
+          </div>
+          <span class="field-feedback" *ngIf="perfil.invalid && perfil.touched">
+            Selecione um perfil.
+          </span>
+        </div>
+
+        <div class="row g-3">
+          <div class="col-12 col-sm-6">
+            <div class="field-group" [class.field-error]="senha.invalid && senha.touched">
+              <label for="senha" class="field-label">Senha</label>
+              <div class="input-wrap">
+                <i class="bi bi-lock input-icon"></i>
+                <input
+                  id="senha"
+                  [type]="mostrarSenha ? 'text' : 'password'"
+                  class="field-input"
+                  formControlName="senha"
+                  placeholder="••••••••"
+                  autocomplete="new-password"
+                />
+                <button type="button" class="toggle-senha" (click)="mostrarSenha = !mostrarSenha" tabindex="-1">
+                  <i class="bi" [class.bi-eye]="!mostrarSenha" [class.bi-eye-slash]="mostrarSenha"></i>
+                </button>
+              </div>
+              <span class="field-feedback" *ngIf="senha.invalid && senha.touched">
+                <ng-container *ngIf="senha.errors?.['required']">Obrigatório.</ng-container>
+                <ng-container *ngIf="senha.errors?.['minlength']">Mín. 6 caracteres.</ng-container>
+              </span>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6">
+            <div class="field-group"
+              [class.field-error]="(confirmarSenha.invalid && confirmarSenha.touched) || (form.errors?.['senhasDivergentes'] && confirmarSenha.touched)">
+              <label for="confirmarSenha" class="field-label">Confirmar</label>
+              <div class="input-wrap">
+                <i class="bi bi-lock-fill input-icon"></i>
+                <input
+                  id="confirmarSenha"
+                  [type]="mostrarConf ? 'text' : 'password'"
+                  class="field-input"
+                  formControlName="confirmarSenha"
+                  placeholder="••••••••"
+                  autocomplete="new-password"
+                />
+                <button type="button" class="toggle-senha" (click)="mostrarConf = !mostrarConf" tabindex="-1">
+                  <i class="bi" [class.bi-eye]="!mostrarConf" [class.bi-eye-slash]="mostrarConf"></i>
+                </button>
+              </div>
+              <span class="field-feedback" *ngIf="confirmarSenha.touched">
+                <ng-container *ngIf="confirmarSenha.errors?.['required']">Obrigatório.</ng-container>
+                <ng-container *ngIf="form.errors?.['senhasDivergentes'] && !confirmarSenha.errors?.['required']">
+                  Senhas não conferem.
+                </ng-container>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-entrar mt-2" [disabled]="carregando">
+          <span *ngIf="!carregando">Criar conta</span>
+          <span *ngIf="carregando" class="spinner-border spinner-border-sm" role="status"></span>
+        </button>
+
+      </form>
+
+      <p class="form-footer">
+        Já tem conta?
+        <a routerLink="/login" class="link-destaque">Entrar</a>
+      </p>
+
+    </div>
+  </main>
+
+</div>

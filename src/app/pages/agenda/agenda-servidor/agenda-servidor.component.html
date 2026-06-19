@@ -1,0 +1,105 @@
+<div class="page-wrapper">
+  <header class="page-header">
+    <div>
+      <h1 class="page-titulo">Agenda por Servidor</h1>
+      <p class="page-sub">Atendimentos individuais de cada profissional</p>
+    </div>
+    <a routerLink="/agenda" class="btn-voltar">
+      <i class="bi bi-calendar3 me-2"></i>Calendário geral
+    </a>
+  </header>
+
+  <div class="alert-erro" *ngIf="erro">
+    <i class="bi bi-exclamation-circle-fill me-2"></i>{{ erro }}
+  </div>
+
+  <div class="loading-state" *ngIf="carregando">
+    <span class="spinner-border spinner-border-sm me-2" style="color:#5ADB94"></span>Carregando...
+  </div>
+
+  <div class="layout-grid" *ngIf="!carregando && !erro">
+
+    <aside class="sidebar-prof">
+      <p class="sidebar-title">Profissionais</p>
+      <div
+        class="prof-item"
+        *ngFor="let p of profissionais"
+        [class.ativo]="profSelecionado?.id === p.id"
+        (click)="selecionarProfissional(p)"
+      >
+        <div class="pav">{{ iniciais(p.nome) }}</div>
+        <div class="pinfo">
+          <span class="pnome">{{ p.nome }}</span>
+          <span class="pespec">{{ p.email }}</span>
+        </div>
+      </div>
+    </aside>
+
+    <main class="painel-principal">
+
+      <ng-container *ngIf="profSelecionado">
+        <div class="prof-header">
+          <div class="pav-lg">{{ iniciais(profSelecionado.nome) }}</div>
+          <div>
+            <h2 class="prof-nome-lg">{{ profSelecionado.nome }}</h2>
+            <p class="prof-espec-lg">{{ profSelecionado.email }}</p>
+          </div>
+          <div class="stats-mini">
+            <div class="sm-item">
+              <span class="sm-v">{{ stats.total }}</span>
+              <span class="sm-l">Total</span>
+            </div>
+            <div class="sm-item">
+              <span class="sm-v">{{ stats.futuros }}</span>
+              <span class="sm-l">Futuros</span>
+            </div>
+            <div class="sm-item">
+              <span class="sm-v">{{ stats.concluidos }}</span>
+              <span class="sm-l">Concluídos</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="loading-state" *ngIf="carregandoAtend">
+          <span class="spinner-border spinner-border-sm me-2" style="color:#5ADB94"></span>Carregando atendimentos...
+        </div>
+
+        <ng-container *ngIf="!carregandoAtend">
+
+          <h3 class="sub-titulo"><i class="bi bi-arrow-right-circle me-2"></i>Próximos / em andamento</h3>
+          <div class="empty-sub" *ngIf="atendimentosFuturos.length === 0">Nenhum atendimento futuro.</div>
+          <div class="escalas-lista" *ngIf="atendimentosFuturos.length > 0">
+            <div class="escala-row" *ngFor="let a of atendimentosFuturos">
+              <div class="er-turno-dot" [style.background]="corSituacao(a.situacao)"></div>
+              <div class="er-data">
+                <span class="er-d">{{ a.dataRealizacao | dateBr }}</span>
+              </div>
+              <div class="er-info">
+                <span class="er-turno">{{ a.pessoaPaciente.nome }}</span>
+                <span class="er-hora" [style.color]="corSituacao(a.situacao)">{{ labelSituacao(a.situacao) }}</span>
+              </div>
+            </div>
+          </div>
+
+          <h3 class="sub-titulo mt-3" *ngIf="atendimentosPassados.length > 0">
+            <i class="bi bi-clock-history me-2"></i>Histórico
+          </h3>
+          <div class="escalas-lista passadas" *ngIf="atendimentosPassados.length > 0">
+            <div class="escala-row" *ngFor="let a of atendimentosPassados">
+              <div class="er-turno-dot" [style.background]="corSituacao(a.situacao)"></div>
+              <div class="er-data">
+                <span class="er-d">{{ a.dataRealizacao | dateBr }}</span>
+              </div>
+              <div class="er-info">
+                <span class="er-turno">{{ a.pessoaPaciente.nome }}</span>
+                <span class="er-hora" [style.color]="corSituacao(a.situacao)">{{ labelSituacao(a.situacao) }}</span>
+              </div>
+            </div>
+          </div>
+
+        </ng-container>
+      </ng-container>
+
+    </main>
+  </div>
+</div>
