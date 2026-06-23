@@ -2,6 +2,8 @@ package com.cefet.jdsaude_api.service;
 
 import com.cefet.jdsaude_api.dto.PessoaRequestDTO;
 import com.cefet.jdsaude_api.dto.PessoaResponseDTO;
+import com.cefet.jdsaude_api.exceptions.BusinessException;
+import com.cefet.jdsaude_api.exceptions.ResourceNotFoundException;
 import com.cefet.jdsaude_api.model.Pessoa;
 import com.cefet.jdsaude_api.repository.PessoaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,36 +31,40 @@ public class PessoaService {
     @Transactional(readOnly = true)
     public PessoaResponseDTO buscarPorId(Long id) {
         Pessoa pessoa = pessoaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Pessoa não encontrada com o Id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Pessoa não encontrada com o Id: " + id));
         return new PessoaResponseDTO(pessoa);
     }
 
     @Transactional(readOnly = true)
     public PessoaResponseDTO buscarPorEmail(String email) {
-        Pessoa pessoa = pessoaRepository.findByEmailContainingIgnoreCase(email)
-                .orElseThrow(() -> new RuntimeException("Pessoa não encontrada com o email: " + email));
+        Pessoa pessoa = pessoaRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Pessoa não encontrada com o Email: " + email));
         return new PessoaResponseDTO(pessoa);
     }
 
     @Transactional(readOnly = true)
     public PessoaResponseDTO buscarPorCpf(String cpf) {
-        Pessoa pessoa = pessoaRepository.findByCpfContaining(cpf)
-                .orElseThrow(() -> new RuntimeException("Pessoa não encontrada com o CPF: " + cpf));
+        Pessoa pessoa = pessoaRepository.findByCpf(cpf)
+                .orElseThrow(() -> new ResourceNotFoundException("Pessoa não encontrada com o CPF: " + cpf));
         return new PessoaResponseDTO(pessoa);
     }
 
     @Transactional(readOnly = true)
-    public PessoaResponseDTO buscarPorNome(String nome) {
-        Pessoa pessoa = pessoaRepository.findByNomeContainingIgnoreCase(nome)
-                .orElseThrow(() -> new RuntimeException("Pessoa não encontrada com o nome: " + nome));
-        return new PessoaResponseDTO(pessoa);
+    public List<PessoaResponseDTO> buscarPorNome(String nome) {
+        return pessoaRepository.findByNomeContainingIgnoreCase(nome)
+                .stream()
+                .map(PessoaResponseDTO::new)
+                .collect(Collectors.toList());
     }
 
     //salvar
     @Transactional
     public PessoaResponseDTO salvar(PessoaRequestDTO dto) {
         if (pessoaRepository.existsByCpf(dto.getCpf())) {
-            throw new RuntimeException("CPF já cadastrado.");
+            throw new BusinessException("CPF já cadastrado.");
+        }
+        if (pessoaRepository.existsByEmail(dto.getEmail())) {
+            throw new BusinessException("E-mail já cadastrado.");
         }
         Pessoa pessoa = new Pessoa(dto);
         return new PessoaResponseDTO(pessoaRepository.save(pessoa));
@@ -68,10 +74,14 @@ public class PessoaService {
     @Transactional
     public PessoaResponseDTO alterar(Long id, PessoaRequestDTO dto) {
         Pessoa pessoa = pessoaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Pessoa não encontrada com o Id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Pessoa não encontrada com o Id: " + id));
 
-        if (pessoaRepository.existsByCpf(dto.getCpf()) && !pessoa.getCpf().equals(dto.getCpf())) {
-            throw new RuntimeException("CPF já cadastrado.");
+        if (!pessoa.getCpf().equals(dto.getCpf()) && pessoaRepository.existsByCpf(dto.getCpf())) {
+            throw new BusinessException("CPF já cadastrado.");
+        }
+
+        if (!pessoa.getEmail().equals(dto.getEmail()) && pessoaRepository.existsByEmail(dto.getEmail())) {
+            throw new BusinessException("E-mail já cadastrado.");
         }
 
         pessoa.setNome(dto.getNome());
@@ -83,9 +93,10 @@ public class PessoaService {
     //exclusao
     @Transactional
     public void excluir(Long id) {
-        Pessoa pessoa = pessoaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Pessoa não encontrada com o Id: " + id));
-        pessoaRepository.delete(pessoa);
+        if (!pessoaRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Pessoa não encontrada com o Id: " + id);
+        }
+        pessoaRepository.deleteById(id);
     }
 
 }

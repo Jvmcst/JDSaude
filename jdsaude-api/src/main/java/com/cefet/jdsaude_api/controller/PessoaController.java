@@ -38,7 +38,7 @@ public class PessoaController {
     }
 
     @GetMapping("/nome/{nome}")
-    public PessoaResponseDTO pesquisarPorNome(@PathVariable String nome) {
+    public List<PessoaResponseDTO> pesquisarPorNome(@PathVariable String nome) {
         return pessoaService.buscarPorNome(nome);
     }
 
