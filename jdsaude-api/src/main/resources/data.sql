@@ -1,5 +1,5 @@
 -- ============================================================
--- JD SAÚDE — import.sql
+-- JD SAÚDE — data.sql
 -- Spring Boot roda este arquivo automaticamente na inicialização
 -- (spring.sql.init.mode=always + spring.jpa.defer-datasource-initialization=true)
 -- ============================================================

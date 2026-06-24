@@ -57,6 +57,14 @@ public class PessoaService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
+    public List<PessoaResponseDTO> listarProfissionais() {
+        return pessoaRepository.findProfissionais()
+                .stream()
+                .map(PessoaResponseDTO::new)
+                .collect(Collectors.toList());
+    }
+
     //salvar
     @Transactional
     public PessoaResponseDTO salvar(PessoaRequestDTO dto) {
@@ -98,5 +106,7 @@ public class PessoaService {
         }
         pessoaRepository.deleteById(id);
     }
+
+
 
 }

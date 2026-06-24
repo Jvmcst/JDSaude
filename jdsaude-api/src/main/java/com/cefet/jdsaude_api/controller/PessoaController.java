@@ -42,6 +42,11 @@ public class PessoaController {
         return pessoaService.buscarPorNome(nome);
     }
 
+    @GetMapping("/profissionais")
+    public List<PessoaResponseDTO> listarProfissionais() {
+        return pessoaService.listarProfissionais();
+    }
+
     //salvar
     @PostMapping
     public PessoaResponseDTO salvar(@RequestBody @Valid PessoaRequestDTO dto) {

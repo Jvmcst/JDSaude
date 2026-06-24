@@ -22,7 +22,7 @@ public class Pessoa {
     @Column(nullable = false, length = 50)
     private String email;
 
-    @Column(nullable = false, length = 11)
+    @Column(nullable = false, length = 14)
     private String cpf;
 
     public Pessoa(PessoaRequestDTO dto) {

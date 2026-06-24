@@ -3,6 +3,7 @@ package com.cefet.jdsaude_api.repository;
 import com.cefet.jdsaude_api.model.Pessoa;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.nio.ByteBuffer;
@@ -27,4 +28,6 @@ public interface PessoaRepository extends JpaRepository<Pessoa, Long> {
     Optional<Pessoa> findByEmail(String email);
 
     Optional<Pessoa> findByCpf(String cpf);
+
+    @Query("SELECT p FROM Pessoa p WHERE EXISTS (SELECT u FROM Usuario u WHERE u.pessoa = p)") List<Pessoa> findProfissionais();
 }
