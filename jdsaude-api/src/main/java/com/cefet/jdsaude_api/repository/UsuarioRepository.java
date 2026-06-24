@@ -1,3 +1,4 @@
+package com.cefet.jdsaude_api.repository;
 
 import com.cefet.jdsaude_api.model.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
