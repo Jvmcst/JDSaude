@@ -44,6 +44,9 @@ public class EspecializacaoService {
     //salvar
     @Transactional
     public EspecializacaoResponseDTO salvar(EspecializacaoRequestDTO dto) {
+        if (especializacaoRepository.existsByDescricaoIgnoreCase(dto.getDescricao())) {
+            throw new RuntimeException("Especialização já cadastrada: " + dto.getDescricao());
+        }
         Especializacao especializacao = new Especializacao(dto);
         return new EspecializacaoResponseDTO(especializacaoRepository.save(especializacao));
     }

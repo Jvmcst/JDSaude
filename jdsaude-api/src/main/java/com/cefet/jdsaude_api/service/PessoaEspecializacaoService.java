@@ -60,6 +60,10 @@ public class PessoaEspecializacaoService {
     //salvar
     @Transactional
     public PessoaEspecializacaoResponseDTO salvar(PessoaEspecializacaoRequestDTO dto) {
+        if (pessoaEspecializacaoRepository.existsByPessoaProfissionalIdAndEspecializacaoId(
+                dto.getIdPessoaProfissional(), dto.getIdEspecializacao())) {
+            throw new RuntimeException("Este profissional já possui esta especialização.");
+        }
         Pessoa profissional = pessoaRepository.findById(dto.getIdPessoaProfissional())
                 .orElseThrow(() -> new RuntimeException("Profissional não encontrado com o Id: " + dto.getIdPessoaProfissional()));
 

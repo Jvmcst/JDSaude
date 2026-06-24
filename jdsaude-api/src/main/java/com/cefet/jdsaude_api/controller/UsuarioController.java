@@ -1,6 +1,5 @@
 package com.cefet.jdsaude_api.controller;
 
-import com.cefet.jdsaude_api.dto.*;
 import com.cefet.jdsaude_api.service.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

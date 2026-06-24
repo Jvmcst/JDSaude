@@ -4,12 +4,14 @@ import com.cefet.jdsaude_api.dto.EscalaRequestDTO;
 import com.cefet.jdsaude_api.dto.EscalaResponseDTO;
 import com.cefet.jdsaude_api.model.Escala;
 import com.cefet.jdsaude_api.model.Pessoa;
+import com.cefet.jdsaude_api.model.enums.DisponibilidadeEscala;
 import com.cefet.jdsaude_api.repository.EscalaRepository;
 import com.cefet.jdsaude_api.repository.PessoaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,6 +42,38 @@ public class EscalaService {
     @Transactional(readOnly = true)
     public List<EscalaResponseDTO> buscarPorProfissional(Long idProfissional) {
         return escalaRepository.findByPessoaProfissionalId(idProfissional)
+                .stream()
+                .map(EscalaResponseDTO::new)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<EscalaResponseDTO> buscarPorData(LocalDate data) {
+        return escalaRepository.findByData(data)
+                .stream()
+                .map(EscalaResponseDTO::new)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<EscalaResponseDTO> buscarPorPeriodo(LocalDate inicio, LocalDate fim) {
+        return escalaRepository.findByDataBetween(inicio, fim)
+                .stream()
+                .map(EscalaResponseDTO::new)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<EscalaResponseDTO> buscarPorDisponibilidade(DisponibilidadeEscala disponibilidade) {
+        return escalaRepository.findByDisponibilidade(disponibilidade)
+                .stream()
+                .map(EscalaResponseDTO::new)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<EscalaResponseDTO> buscarPorProfissionalEPeriodo(Long idProfissional, LocalDate inicio, LocalDate fim) {
+        return escalaRepository.findByPessoaProfissionalIdAndDataBetween(idProfissional, inicio, fim)
                 .stream()
                 .map(EscalaResponseDTO::new)
                 .collect(Collectors.toList());
