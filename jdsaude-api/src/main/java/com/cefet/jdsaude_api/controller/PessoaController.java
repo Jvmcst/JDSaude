@@ -22,6 +22,11 @@ public class PessoaController {
         return pessoaService.listarTodos();
     }
 
+    @GetMapping("/profissionais")
+    public List<PessoaResponseDTO> listarProfissionais() {
+        return pessoaService.listarProfissionais();
+    }
+
     @GetMapping("/{id}")
     public PessoaResponseDTO pesquisarPorId(@PathVariable Long id) {
         return pessoaService.buscarPorId(id);
@@ -42,10 +47,6 @@ public class PessoaController {
         return pessoaService.buscarPorNome(nome);
     }
 
-    @GetMapping("/profissionais")
-    public List<PessoaResponseDTO> listarProfissionais() {
-        return pessoaService.listarProfissionais();
-    }
 
     //salvar
     @PostMapping
