@@ -61,6 +61,27 @@
           </span>
         </div>
 
+        <div class="field-group" [class.field-error]="cpf.invalid && cpf.touched">
+          <label for="cpf" class="field-label">CPF</label>
+          <div class="input-wrap">
+            <i class="bi bi-card-text input-icon"></i>
+            <input
+              id="cpf"
+              type="text"
+              class="field-input"
+              formControlName="cpf"
+              placeholder="000.000.000-00"
+              maxlength="14"
+              onlyNumbers
+              autocomplete="off"
+            />
+          </div>
+          <span class="field-feedback" *ngIf="cpf.invalid && cpf.touched">
+            <ng-container *ngIf="cpf.errors?.['required']">CPF obrigatório.</ng-container>
+            <ng-container *ngIf="cpf.errors?.['cpfInvalido']">CPF inválido.</ng-container>
+          </span>
+        </div>
+
         <div class="field-group" [class.field-error]="email.invalid && email.touched">
           <label for="email" class="field-label">E-mail</label>
           <div class="input-wrap">

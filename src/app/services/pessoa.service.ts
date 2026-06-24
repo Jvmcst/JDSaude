@@ -32,6 +32,10 @@ export class PessoaService extends ApiService {
     return this.post<Pessoa>(this.PATH, req);
   }
 
+  listarProfissionais(): Observable<Pessoa[]> {
+    return this.get<Pessoa[]>(`${this.PATH}/profissionais`);
+  }
+
   atualizar(id: number, req: PessoaRequest): Observable<Pessoa> {
     return this.put<Pessoa>(`${this.PATH}/${id}`, req);
   }

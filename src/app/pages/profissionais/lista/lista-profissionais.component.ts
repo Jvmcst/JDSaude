@@ -26,21 +26,21 @@ export class ListaProfissionaisComponent implements OnInit {
 
   ngOnInit(): void { this.carregar(); }
 
-  carregar(): void {
-    this.carregando = true;
-    this.erro = '';
-    this.pessoaService.listar().subscribe({
-      next: lista => {
-        this.profissionais = lista;
-        this.paginaAtual   = 1;
-        this.carregando    = false;
-      },
-      error: () => {
-        this.erro       = 'Erro ao carregar profissionais. Verifique se a API está rodando.';
-        this.carregando = false;
-      }
-    });
-  }
+carregar(): void {
+  this.carregando = true;
+  this.erro = '';
+  this.pessoaService.listarProfissionais().subscribe({
+    next: lista => {
+      this.profissionais = lista;
+      this.paginaAtual   = 1;
+      this.carregando    = false;
+    },
+    error: () => {
+      this.erro       = 'Erro ao carregar profissionais. Verifique se a API está rodando.';
+      this.carregando = false;
+    }
+  });
+}
 
   get profissionaisFiltrados(): Pessoa[] {
     if (!this.busca.trim()) return this.profissionais;

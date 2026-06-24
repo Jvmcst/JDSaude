@@ -258,3 +258,48 @@
 
   &:hover { background: rgba(#5ADB94, .15); border-color: rgba(#5ADB94, .4); color: #5ADB94; }
 }
+
+
+// Paginacao
+.paginacao {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .4rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.pg-btn {
+  min-width: 36px;
+  height: 36px;
+  padding: 0 .65rem;
+  background: #0e1a14;
+  border: 1px solid rgba(#5ADB94, .18);
+  border-radius: 8px;
+  color: #7aaa8a;
+  font-size: .85rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .15s, border-color .15s, color .15s;
+
+  &:hover:not(:disabled) {
+    background: rgba(#5ADB94, .1);
+    border-color: rgba(#5ADB94, .35);
+    color: #5ADB94;
+  }
+
+  &.active {
+    background: rgba(#5ADB94, .15);
+    border-color: #5ADB94;
+    color: #5ADB94;
+  }
+
+  &:disabled {
+    opacity: .3;
+    cursor: not-allowed;
+  }
+}
