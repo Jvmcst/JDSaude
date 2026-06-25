@@ -8,13 +8,8 @@
     </div>
 
     <nav class="sidebar-nav">
-      <a
-        *ngFor="let item of menuItems"
-        class="nav-item"
-        [routerLink]="item.route"
-        routerLinkActive="active"
-        [routerLinkActiveOptions]="{exact: item.route === '/admin/home'}"
-      >
+      <a *ngFor="let item of menuItems" class="nav-item" [routerLink]="item.route" routerLinkActive="active"
+        [routerLinkActiveOptions]="{exact: item.route === '/admin/home'}">
         <i class="bi {{ item.icon }}"></i>
         <span>{{ item.label }}</span>
       </a>
@@ -85,6 +80,13 @@
           <div>
             <span class="ac-titulo">Agenda</span>
             <span class="ac-sub">Calendário e escalas</span>
+          </div>
+        </a>
+        <a routerLink="/medicamentos" class="acesso-card">
+          <i class="bi bi-capsule-pill"></i>
+          <div>
+            <span class="ac-titulo">Medicamentos</span>
+            <span class="ac-sub">Cadastrar e gerenciar medicamentos</span>
           </div>
         </a>
         <a routerLink="/relatorios" class="acesso-card">

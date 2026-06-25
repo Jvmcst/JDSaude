@@ -21,13 +21,14 @@ export class HomeAdminComponent implements OnInit {
     atendimentosConcluidos: 0,
   };
 
-  readonly menuItems = [
-    { label: 'Dashboard',     route: '/admin/home',     icon: 'bi-speedometer2'    },
-    { label: 'Pacientes',     route: '/pacientes',      icon: 'bi-people'          },
-    { label: 'Profissionais', route: '/profissionais',  icon: 'bi-person-badge'    },
-    { label: 'Agenda',        route: '/agenda',         icon: 'bi-calendar3'       },
-    { label: 'Relatórios',    route: '/relatorios',     icon: 'bi-bar-chart'       },
-  ];
+readonly menuItems = [
+  { label: 'Dashboard',     route: '/admin/home',     icon: 'bi-speedometer2' },
+  { label: 'Pacientes',     route: '/pacientes',      icon: 'bi-people'       },
+  { label: 'Profissionais', route: '/profissionais',  icon: 'bi-person-badge' },
+  { label: 'Agenda',        route: '/agenda',         icon: 'bi-calendar3'    },
+  { label: 'Medicamentos',  route: '/medicamentos',   icon: 'bi-capsule-pill' },
+  { label: 'Relatórios',    route: '/relatorios',     icon: 'bi-bar-chart'    },
+];
 
   constructor(
     public  authService: AuthService,
