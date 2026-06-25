@@ -27,6 +27,8 @@
   &.agendada   .sv { color: #5ab8db; }
   &.confirmada .sv { color: #5ADB94; }
   &.atendimento .sv { color: #dbb45a; }
+  &.concluido  .sv { color: #5ADB94; }
+  &.cancelado  .sv { color: #f08080; }
 }
 
 .filtros-bar {

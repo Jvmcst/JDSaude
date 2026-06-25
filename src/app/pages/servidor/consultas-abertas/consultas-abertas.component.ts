@@ -24,6 +24,8 @@ export class ConsultasAbertasComponent implements OnInit {
     { valor: '',             label: 'Todas as situações' },
     { valor: 'AGENDADO',     label: 'Agendados'          },
     { valor: 'EM_ANDAMENTO', label: 'Em andamento'       },
+    { valor: 'CONCLUIDO',    label: 'Concluídos'         },
+    { valor: 'CANCELADO',    label: 'Cancelados'         },
   ];
 
   constructor(private atendimentoService: AtendimentoService) {}
@@ -35,10 +37,7 @@ export class ConsultasAbertasComponent implements OnInit {
     this.erro = '';
     this.atendimentoService.listar().subscribe({
       next: lista => {
-        // Exibo apenas os atendimentos nao finalizados
-        this.atendimentos = lista.filter(
-          a => a.situacao !== 'CONCLUIDO' && a.situacao !== 'CANCELADO'
-        );
+        this.atendimentos = lista;
         this.carregando = false;
       },
       error: () => {
@@ -62,6 +61,8 @@ export class ConsultasAbertasComponent implements OnInit {
     return {
       agendados:    this.atendimentos.filter(a => a.situacao === 'AGENDADO').length,
       emAndamento:  this.atendimentos.filter(a => a.situacao === 'EM_ANDAMENTO').length,
+      concluidos:   this.atendimentos.filter(a => a.situacao === 'CONCLUIDO').length,
+      cancelados:   this.atendimentos.filter(a => a.situacao === 'CANCELADO').length,
     };
   }
 

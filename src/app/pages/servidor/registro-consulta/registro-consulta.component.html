@@ -61,8 +61,8 @@
             <span class="obrigatorio">*</span>
           </h3>
 
-          <div class="input-row">
-            <div class="input-wrap flex1">
+          <div class="autocomplete-wrap">
+            <div class="input-wrap">
               <input
                 type="text"
                 class="field-input"
@@ -71,10 +71,10 @@
                 (keydown.enter)="adicionarDiag(); $event.preventDefault()"
                 placeholder="Descreva o diagnóstico e pressione Enter..."
               />
+              <button type="button" class="btn-add-inline" (click)="adicionarDiag()" [disabled]="!termoDiag.trim()">
+                <i class="bi bi-plus-lg"></i>
+              </button>
             </div>
-            <button type="button" class="btn-add-inline" (click)="adicionarDiag()" [disabled]="!termoDiag.trim()">
-              <i class="bi bi-plus-lg"></i> Adicionar
-            </button>
           </div>
 
           <div class="tags-list" *ngIf="diagSelecionados.length > 0">
