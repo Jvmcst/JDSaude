@@ -11,8 +11,9 @@ public class CorsConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOrigins(
-                        "http://localhost:4200",   // Angular dev server
-                        "http://localhost:3000"    // caso queira rodar em outra porta
+                        "http://localhost:4200",
+                        "http://localhost:3000",
+                        "https://jdsissaude.netlify.app"
                 )
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
