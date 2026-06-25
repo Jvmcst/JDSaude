@@ -20,9 +20,9 @@ export const routes: Routes = [
     path: 'secretario',
     canActivate: [authGuard, secretarioGuard],
     children: [
-      { path: '',           redirectTo: 'home', pathMatch: 'full' },
-      { path: 'home',       loadComponent: () => import('./pages/secretario/home/home-secretario.component').then(m => m.HomeSecretarioComponent) },
-      { path: 'agendamento',loadComponent: () => import('./pages/secretario/agendamento/agendamento.component').then(m => m.AgendamentoComponent) },
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
+      { path: 'home', loadComponent: () => import('./pages/secretario/home/home-secretario.component').then(m => m.HomeSecretarioComponent) },
+      { path: 'agendamento', loadComponent: () => import('./pages/secretario/agendamento/agendamento.component').then(m => m.AgendamentoComponent) },
     ]
   },
 
@@ -31,9 +31,9 @@ export const routes: Routes = [
     path: 'servidor',
     canActivate: [authGuard, servidorGuard],
     children: [
-      { path: '',                       redirectTo: 'home', pathMatch: 'full' },
-      { path: 'home',                   loadComponent: () => import('./pages/servidor/home/home-servidor.component').then(m => m.HomeServidorComponent) },
-      { path: 'consultas',              loadComponent: () => import('./pages/servidor/consultas-abertas/consultas-abertas.component').then(m => m.ConsultasAbertasComponent) },
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
+      { path: 'home', loadComponent: () => import('./pages/servidor/home/home-servidor.component').then(m => m.HomeServidorComponent) },
+      { path: 'consultas', loadComponent: () => import('./pages/servidor/consultas-abertas/consultas-abertas.component').then(m => m.ConsultasAbertasComponent) },
       { path: 'consultas/:id/registro', loadComponent: () => import('./pages/servidor/registro-consulta/registro-consulta.component').then(m => m.RegistroConsultaComponent) },
     ]
   },
@@ -43,9 +43,9 @@ export const routes: Routes = [
     path: 'admin',
     canActivate: [authGuard, adminGuard],
     children: [
-      { path: '',                    redirectTo: 'home', pathMatch: 'full' },
-      { path: 'home',                loadComponent: () => import('./pages/admin/home/home-admin.component').then(m => m.HomeAdminComponent) },
-      { path: 'usuarios',            loadComponent: () => import('./pages/admin/usuarios/gerenciar-usuarios.component').then(m => m.GerenciarUsuariosComponent) },
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
+      { path: 'home', loadComponent: () => import('./pages/admin/home/home-admin.component').then(m => m.HomeAdminComponent) },
+      { path: 'usuarios', loadComponent: () => import('./pages/admin/usuarios/gerenciar-usuarios.component').then(m => m.GerenciarUsuariosComponent) },
       { path: 'usuarios/:id/editar', loadComponent: () => import('./pages/admin/editar-usuario/editar-usuario.component').then(m => m.EditarUsuarioComponent) },
     ]
   },
@@ -55,8 +55,8 @@ export const routes: Routes = [
     path: 'pacientes',
     canActivate: [authGuard],
     children: [
-      { path: '',           loadComponent: () => import('./pages/pacientes/lista/lista-pacientes.component').then(m => m.ListaPacientesComponent) },
-      { path: 'novo',       loadComponent: () => import('./pages/pacientes/cadastro/cadastro-paciente.component').then(m => m.CadastroPacienteComponent) },
+      { path: '', loadComponent: () => import('./pages/pacientes/lista/lista-pacientes.component').then(m => m.ListaPacientesComponent) },
+      { path: 'novo', loadComponent: () => import('./pages/pacientes/cadastro/cadastro-paciente.component').then(m => m.CadastroPacienteComponent) },
       { path: ':id/editar', loadComponent: () => import('./pages/pacientes/editar/editar-paciente.component').then(m => m.EditarPacienteComponent) },
     ]
   },
@@ -66,8 +66,8 @@ export const routes: Routes = [
     path: 'profissionais',
     canActivate: [authGuard],
     children: [
-      { path: '',               loadComponent: () => import('./pages/profissionais/lista/lista-profissionais.component').then(m => m.ListaProfissionaisComponent) },
-      { path: ':id/historico',  loadComponent: () => import('./pages/profissionais/historico/historico-profissional.component').then(m => m.HistoricoProfissionalComponent) },
+      { path: '', loadComponent: () => import('./pages/profissionais/lista/lista-profissionais.component').then(m => m.ListaProfissionaisComponent) },
+      { path: ':id/historico', loadComponent: () => import('./pages/profissionais/historico/historico-profissional.component').then(m => m.HistoricoProfissionalComponent) },
     ]
   },
 
@@ -76,9 +76,19 @@ export const routes: Routes = [
     path: 'agenda',
     canActivate: [authGuard],
     children: [
-      { path: '',          loadComponent: () => import('./pages/agenda/calendario/calendario.component').then(m => m.CalendarioComponent) },
-      { path: 'escalas',   loadComponent: () => import('./pages/agenda/escalas/escalas.component').then(m => m.EscalasComponent) },
-      { path: 'servidores',loadComponent: () => import('./pages/agenda/agenda-servidor/agenda-servidor.component').then(m => m.AgendaServidorComponent) },
+      { path: '', loadComponent: () => import('./pages/agenda/calendario/calendario.component').then(m => m.CalendarioComponent) },
+      { path: 'escalas', loadComponent: () => import('./pages/agenda/escalas/escalas.component').then(m => m.EscalasComponent) },
+      { path: 'servidores', loadComponent: () => import('./pages/agenda/agenda-servidor/agenda-servidor.component').then(m => m.AgendaServidorComponent) },
+    ]
+  },
+
+  {
+    path: 'medicamentos',
+    canActivate: [authGuard],
+    children: [
+      { path: '', loadComponent: () => import('./pages/medicamentos/lista/lista-medicamentos.component').then(m => m.ListaMedicamentosComponent) },
+      { path: 'novo', loadComponent: () => import('./pages/medicamentos/form/medicamento-form.component').then(m => m.MedicamentoFormComponent) },
+      { path: ':id/editar', loadComponent: () => import('./pages/medicamentos/form/medicamento-form.component').then(m => m.MedicamentoFormComponent) },
     ]
   },
 
@@ -87,8 +97,8 @@ export const routes: Routes = [
     path: 'relatorios',
     canActivate: [authGuard],
     children: [
-      { path: '',       loadComponent: () => import('./pages/relatorios/relatorios.component').then(m => m.RelatoriosComponent) },
-      { path: 'semanal',loadComponent: () => import('./pages/relatorios/relatorio-semanal.component').then(m => m.RelatorioSemanalComponent) },
+      { path: '', loadComponent: () => import('./pages/relatorios/relatorios.component').then(m => m.RelatoriosComponent) },
+      { path: 'semanal', loadComponent: () => import('./pages/relatorios/relatorio-semanal.component').then(m => m.RelatorioSemanalComponent) },
       { path: 'agenda', loadComponent: () => import('./pages/relatorios/agenda-pesquisa.component').then(m => m.AgendaPesquisaComponent) },
     ]
   },

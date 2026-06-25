@@ -1,0 +1,75 @@
+<div class="page-wrapper">
+
+  <header class="page-header">
+    <a routerLink="/medicamentos" class="btn-voltar">
+      <i class="bi bi-arrow-left me-2"></i>Voltar
+    </a>
+    <div>
+      <h1 class="page-titulo">{{ modoEdicao ? 'Editar Medicamento' : 'Novo Medicamento' }}</h1>
+      <p class="page-sub">{{ modoEdicao ? 'Atualize os dados do medicamento' : 'Preencha os dados do medicamento' }}</p>
+    </div>
+  </header>
+
+  <div class="alert-sucesso" *ngIf="sucesso">
+    <i class="bi bi-check-circle-fill me-2"></i>
+    Medicamento {{ modoEdicao ? 'atualizado' : 'cadastrado' }} com sucesso! Redirecionando...
+  </div>
+
+  <div class="alert-erro" *ngIf="erro">
+    <i class="bi bi-exclamation-circle-fill me-2"></i>{{ erro }}
+  </div>
+
+  <div class="loading-state" *ngIf="carregandoDados">
+    <span class="spinner-border spinner-border-sm me-2" style="color:#5ADB94"></span>
+    Carregando dados...
+  </div>
+
+  <div class="form-card" *ngIf="!carregandoDados">
+    <form [formGroup]="form" (ngSubmit)="salvar()">
+
+      <div class="form-group">
+        <label class="form-label">
+          Nome do medicamento <span class="obrigatorio">*</span>
+        </label>
+        <input
+          type="text"
+          class="form-input"
+          [class.input-erro]="invalido('nome')"
+          formControlName="nome"
+          placeholder="Ex: Paracetamol 500mg"
+          autocomplete="off"
+        />
+        <span class="msg-erro" *ngIf="invalido('nome')">
+          <ng-container *ngIf="campo('nome')?.errors?.['required']">Nome é obrigatório.</ng-container>
+          <ng-container *ngIf="campo('nome')?.errors?.['minlength']">Nome deve ter ao menos 2 caracteres.</ng-container>
+        </span>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Descrição</label>
+        <textarea
+          class="form-input form-textarea"
+          formControlName="descricao"
+          placeholder="Informações adicionais, indicações, composição..."
+          rows="4"
+        ></textarea>
+        <span class="form-hint">Campo opcional. Descreva indicações ou composição.</span>
+      </div>
+
+      <div class="form-footer">
+        <a routerLink="/medicamentos" class="btn-cancelar">Cancelar</a>
+        <button type="submit" class="btn-salvar" [disabled]="carregando">
+          <span *ngIf="!carregando">
+            <i class="bi bi-check-lg me-2"></i>
+            {{ modoEdicao ? 'Salvar alterações' : 'Cadastrar medicamento' }}
+          </span>
+          <span *ngIf="carregando">
+            <span class="spinner-border spinner-border-sm me-2"></span>Salvando...
+          </span>
+        </button>
+      </div>
+
+    </form>
+  </div>
+
+</div>
